@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the accompanying article and this repository."
+title: "When personal baselines become stale: reproducibility code"
+type: software
+authors:
+  - family-names: Liao
+    given-names: Runqing
+    email: 202411055222@stu.hstc.edu.cn
+  - family-names: Wang
+    given-names: Zhining
+    email: mathwangzhining@163.com
+repository-code: "https://github.com/liaorunqing/psychology"
+url: "https://github.com/liaorunqing/psychology"
+license: Apache-2.0
+version: 1.0.0
+date-released: 2026-10-01
+keywords:
+  - ecological momentary assessment
+  - digital phenotyping
+  - personal baseline
+  - longitudinal psychology
+  - temporal validation

@@ -1,0 +1,12 @@
+data/
+analysis/outputs/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+*.log
+*.parquet
+*.feather
+*.pkl
+*.joblib
+.env
