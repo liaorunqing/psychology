@@ -1,7 +1,0 @@
-[
-  "tests/test_public_release.py::test_baseline_age_strata_match_frozen_boundaries",
-  "tests/test_public_release.py::test_current_and_future_values_cannot_enter_history_features",
-  "tests/test_public_release.py::test_equal_participant_weighting",
-  "tests/test_public_release.py::test_fold_assignment_is_reproducible_and_participant_disjoint",
-  "tests/test_public_release.py::test_sustained_deterioration_uses_only_prior_values"
-]
