@@ -4,7 +4,7 @@ No raw or participant-level derived data are redistributed in this repository.
 
 | Dataset | Role | Access |
 |---|---|---|
-| CES / StudentLife-derived cohort | Cross-timescale PHQ-2 analysis | Described by Nepal et al.; access and reuse follow the source repository terms. Required derived tables are not redistributed here. |
+| College Experience Study (CES) | Cross-timescale PHQ-2 analysis | [Kaggle dataset page](https://www.kaggle.com/datasets/subigyanepal/college-experience-dataset), CC BY-NC-SA 4.0; access and reuse follow the repository terms. Required participant-level derived tables are not redistributed here. |
 | Dejonckheere / openESM 0012 | External intensive-EMA confirmation | Zenodo DOI: [10.5281/zenodo.17347569](https://doi.org/10.5281/zenodo.17347569), CC BY 4.0. |
 | Marian / openESM 0052 | Cross-dataset intensive-EMA replication | Zenodo DOI: [10.5281/zenodo.17348267](https://doi.org/10.5281/zenodo.17348267), CC BY 4.0. |
 

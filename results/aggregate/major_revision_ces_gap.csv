@@ -1,0 +1,2 @@
+gap_group,participants,targets,mae_B,mae_L,relative_mae_percent,ci_low,ci_high,slope_participants,mean_slope,slope_ci_low,slope_ci_high,positive_slope_fraction
+>=14 days,105,4541,0.9746914470323302,0.7468146793894199,-23.379374912618033,-30.42072569388529,-16.61563516656986,99,0.10547372167411627,0.06153142269624771,0.15715439863551767,0.5959595959595959

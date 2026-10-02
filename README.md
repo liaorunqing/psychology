@@ -1,6 +1,6 @@
-# When personal baselines become stale
+# When early personal baselines lose predictive relevance
 
-Reproducibility code for **“When personal baselines become stale: cross-timescale evidence from repeated psychological self-reports.”**
+Reproducibility materials for **“When early personal baselines lose predictive relevance: cross-timescale evidence from repeated psychological self-reports.”**
 
 This repository contains the frozen analysis scripts, participant-level validation tests, and preregistered/frozen analysis protocols used to compare an early personal baseline with recent and continuously updated baselines across three intensive-longitudinal psychological datasets.
 
@@ -14,10 +14,28 @@ The release covers:
 - participant-level reliability and temporal-generalizability analyses;
 - nested prediction of future updating benefit;
 - the sustained-deterioration safety experiment;
-- reviewer-requested robustness analyses; and
-- generation of the four main manuscript figures.
+- reviewer-requested comparator and bounded-score analyses;
+- window-length, CES recall-gap, Marian inverse-observation-weighting, and
+  repeated pseudo-origin sensitivities; and
+- generation of the five main manuscript figures.
 
 The repository does **not** contain raw or participant-level derived data. Dataset access remains governed by the original repositories and licenses.
+
+The `results/aggregate` and `figures/source_data` directories contain only
+group-level, participant-balanced summaries used in the manuscript. They do
+not contain participant identifiers or participant-level rows.
+
+## Repository map
+
+```text
+analysis/revision_2026_09_29/  frozen analysis and figure scripts
+direction_reset/               dated analysis protocols
+tests/                         leakage and construction unit tests
+results/aggregate/             non-identifying aggregate result tables
+figures/source_data/           machine-readable source values for figures
+figures/rendered/              rendered PDF figures
+manuscript/                    LaTeX manuscript and supplement sources
+```
 
 ## Data layout
 
@@ -63,7 +81,10 @@ Please cite the accompanying article and this repository. Machine-readable citat
 
 ## Archiving status
 
-The live code is available at <https://github.com/liaorunqing/psychology>. A versioned archival DOI will be added after a GitHub release is deposited in a long-term research repository; no DOI is claimed in the current version.
+The live code is available at <https://github.com/liaorunqing/psychology>.
+Release `v1.1.0` is the frozen code and aggregate-output snapshot corresponding
+to the current manuscript. A long-term archival DOI will be added after
+repository deposition; no DOI is claimed in this version.
 
 ## License
 

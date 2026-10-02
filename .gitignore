@@ -10,3 +10,10 @@ __pycache__/
 *.pkl
 *.joblib
 .env
+manuscript/*.aux
+manuscript/*.out
+manuscript/*.bbl
+manuscript/*.blg
+manuscript/*.toc
+manuscript/main.pdf
+manuscript/supplement.pdf

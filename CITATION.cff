@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite the accompanying article and this repository."
-title: "When personal baselines become stale: reproducibility code"
+title: "When early personal baselines lose predictive relevance: reproducibility materials"
 type: software
 authors:
   - family-names: Liao
@@ -12,8 +12,8 @@ authors:
 repository-code: "https://github.com/liaorunqing/psychology"
 url: "https://github.com/liaorunqing/psychology"
 license: Apache-2.0
-version: 1.0.0
-date-released: 2026-10-01
+version: 1.1.0
+date-released: 2026-10-02
 keywords:
   - ecological momentary assessment
   - digital phenotyping

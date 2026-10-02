@@ -1,0 +1,375 @@
+% Supplementary information, major revision 2 October 2026.
+\documentclass[pdflatex,sn-vancouver-num]{sn-jnl}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{amsmath,amssymb}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{seqsplit}
+\raggedbottom
+\unnumbered
+
+\begin{document}
+\renewcommand{\thetable}{S\arabic{table}}
+
+\title{Supplementary information for: When early personal baselines lose predictive relevance}
+\author[1]{\fnm{Runqing} \sur{Liao}}\email{202411055222@stu.hstc.edu.cn}
+\author*[1]{\fnm{Zhining} \sur{Wang}}\email{mathwangzhining@163.com}
+\affil*[1]{\orgdiv{School of Mathematics and Statistics}, \orgname{Hanshan Normal University}, \orgaddress{\city{Chaozhou}, \postcode{521041}, \country{China}}}
+\maketitle
+
+\section{Supplementary Methods 1: cohorts, chronology, and inclusion}
+
+All analyses used de-identified secondary data. Within each dataset--outcome pair, complete reports were ordered chronologically. The first eight complete reports formed the calibration block. A participant entered an equal-information prediction analysis only if at least one later complete target existed; participant-specific age-slope analyses additionally required at least five targets and variation in baseline age. No statistical outlier rule was used to remove observed outcome values. Scale-range validation occurred before analysis. Repeated reports were never treated as independent participants.
+
+The study used a staged evidential chronology. CES and Marian supported initial mechanism development. Outcomes, history budget, missingness checks, participant weighting, and the success criterion were then frozen before inspecting the Dejonckheere self-report outcome associations. Equal-weight, circular-shift, temporal-stability, machine-learning, and semi-synthetic safety analyses followed as explicitly post-hoc challenges. Window-length, recall-separation, Marian IPW, and pseudo-origin analyses were fixed and run in response to review. The embargoed OSF registration concerned a different CES--PSYCHE-D activity and sleep question and is not claimed as preregistration for the present study.
+
+\section{Supplementary Methods 2: equal-information estimands and null models}
+
+For participant $i$ and complete-report index $t>8$, the frozen and recent baselines were
+\[
+B8_i=\frac{1}{8}\sum_{j=1}^{8}y_{ij},\qquad
+L8_{it}=\frac{1}{8}\sum_{j=t-8}^{t-1}y_{ij}.
+\]
+Update benefit was $U_{it}=|y_{it}-B8_i|-|y_{it}-L8_{it}|$. Baseline age was elapsed days from the eighth report in CES and scheduled-opportunity distance in the two experience-sampling datasets. Age was transformed as $\log(1+\mathrm{age})$ and divided by its dataset--outcome target-level standard deviation. For participants with sufficient targets, an ordinary least-squares slope of $U_{it}$ on within-person-centred scaled age was fitted. The arithmetic mean of participant slopes was the inferential estimand.
+
+Time permutation randomly reordered non-missing scores within participant while retaining assessment positions and target counts. The circular-shift challenge selected a non-zero cyclic shift within participant, preserving the score multiset, missing positions, and cyclic adjacent-pair structure while relocating the study start. B8, L8, target errors, and slopes were reconstructed for every one of 500 draws. One-sided Monte Carlo values were $(1+k)/501$. Four primary outcomes used a Bonferroni threshold of 0.0125.
+
+\section{Supplementary Methods 3: temporal generalizability and machine learning}
+
+For temporal generalizability, each participant's post-calibration targets were divided chronologically into non-overlapping early and late blocks. Each block required at least five targets and age variation. Slopes and mean update benefits were estimated independently in the two blocks. Pearson and Spearman correlations were calculated across participants; Pearson intervals used 2,000 participant bootstrap samples.
+
+The exploratory machine-learning target was late-block mean update benefit. Predictors were restricted to the first eight reports: mean, sample standard deviation, mean absolute successive difference, and linear trend. Ridge regression used five participant-disjoint outer folds and five-fold inner selection of $\alpha\in\{0.01,0.1,1,10,100\}$. Scaling and tuning were fitted only within training data. Each of 500 label permutations reran the complete nested procedure. The frozen gate required more than 10\% RMSE improvement, a participant-bootstrap interval below zero for relative RMSE change, positive out-of-fold correlation, and Bonferroni-adjusted one-sided $p\leq0.0125$.
+
+\section{Supplementary Methods 4: sustained-change stress test}
+
+The stress test retained each participant's observed residual sequence and added a directional offset to future targets. Higher values indicated worsening for the four primary outcomes. In the primary scenario, the offset began at the midpoint, increased linearly from one eighth to one pooled within-person outcome standard deviation over eight complete reports, and remained at one standard deviation for eight additional reports. Eligibility required at least 32 post-calibration targets.
+
+For an injected offset sequence $d_{it}$, B8 did not adapt. L8's injected adaptation at target $t$ was $8^{-1}\sum_{j=t-8}^{t-1}d_{ij}$, so neither $d_{it}$ nor future offsets entered the current baseline. A50 was $0.5B8+0.5L8$. Sustained-phase signal retention was the injection-induced change in worsening-direction deviation divided by the imposed plateau shift. Because the injected trajectory and baseline weights were fixed, retention is a structural property of the schedule, not a clinical effect estimate.
+
+For the secondary alarm comparison, each outcome--method threshold was the weighted 95th percentile of pre-injection original deviation scores, with each participant receiving equal total weight. Matched post-onset original scores provided the false-alarm rate. Injected scores provided detection rate; their difference was the excess alarm rate. The full grid crossed 0.5- and 1.0-SD amplitudes, onset fractions 0.40, 0.50, and 0.60, and ramp lengths 4, 8, and 16. Ineligible dataset--scenario combinations remained recorded in the audit rather than being silently dropped.
+
+\section{Supplementary Methods 5: uncertainty, integrity, and reproducibility}
+
+Participant-balanced metrics were calculated within participant before averaging. Unless otherwise stated, intervals used 2,000 bootstrap resamples of participants. These intervals quantify sampling variation among observed participants, conditional on the selected datasets and analysis decisions. They are not intervals over hypothetical datasets. All random procedures used seed 20260918. Automated tests verified strict temporal ordering, current/future exclusion, equal eight-value construction, disjoint participant folds, nested training-only preprocessing, null-model invariants, injection ordering, participant-level resampling, and output reconciliation.
+
+\section{Supplementary Methods 6: post-review comparator and bounded-score analyses}
+
+Three additional predictors were computed from strictly prior reports. ``Last'' was the immediately preceding complete value. ``Cumulative'' was the mean of all complete values before the target. EWM8 was initialized at B8 and then updated as $m_t=(1-2/9)m_{t-1}+(2/9)y_{t-1}$, so the target $y_t$ never entered its own prediction. No outcome-specific tuning was performed. For PHQ-2 and Marian outcomes, B8 and L8 predictions were rounded and clipped to the admissible score set before computing exact accuracy, within-one accuracy, and absolute ordinal error. These additions were specified after review of the primary results and are interpreted descriptively.
+
+\section{Supplementary Methods 7: origin, window, and observation sensitivities}
+
+These analyses were written into a dated post-review protocol before execution. Window-length analyses compared early and recent equal-weight means for $K=4,6,8,$ and 12 on common targets beginning at complete-report index 13. CES recall separation used the elapsed days between the target and immediately preceding complete PHQ-2 assessment. Marian response probabilities came from five participant-disjoint folds of an L2 logistic model using strictly prior completion rate, current missing streak, day, and beep; inverse probabilities were clipped to 0.10--0.99 and normalized within participant. Pseudo-origin placement used the retrospectively observed complete-series length; consequently, repeated-origin results diagnose dependence on the original study start but do not represent prospective rolling-origin validation.
+
+For repeated-origin analyses, a participant required at least 21 complete observations. Early, middle, and late origins were the first eligible index, the midpoint of the eligible starting-index range, and the final index retaining at least five evaluation targets. Eight reports formed the fixed baseline, the next eight reports were a washout, and evaluation began at the seventeenth report after each origin. B8 and L8 therefore shared no calibration values at the first evaluated target. Origins were not independent because they reused participants and sometimes observations. All contrasts and slope intervals used 2,000 participant bootstrap resamples with seed 20260918.
+
+\begin{table*}[!htbp]
+\caption{Cohort flow and analytic roles.}\label{tab:s1}
+\centering\small
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}llrrrrrr@{}}
+\toprule
+Dataset & Outcome role and schedule & Source participants & Source rows & Complete records & Eligible participants & Post-calibration targets & Slope participants\\
+\midrule
+Dejonckheere & Five 0--100 momentary items; 14 days & 100 & 9,800 & 8,702 & 100 & 7,902 per outcome & 100\\
+CES & PHQ-2 (0--6); up to four years & 110 & 5,407 & 5,407 & 105 & 4,541 & 99\\
+Marian & Two 1--4 momentary items; 21 days & 145 & 9,135 & 8,231 & 145 & 7,071 per outcome & 145\\
+\bottomrule
+\end{tabular}%
+}
+\begin{flushleft}\footnotesize Eligibility required at least nine complete reports (eight calibration reports plus one target). Slope analyses additionally required at least five targets and age variation. CES source rows refer to the constructed complete PHQ-2 panel and are not a scheduled-opportunity denominator. Stress-test eligibility was scenario-specific and is reported in Table S6.\end{flushleft}
+\end{table*}
+
+\begin{table*}[!htbp]
+\caption{Variable and construct mapping.}\label{tab:s2}
+\centering\small
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}llll@{}}
+\toprule
+Dataset & Variable & Scale / reference period & Interpretation boundary\\
+\midrule
+Dejonckheere & sad, stressed, happy, relaxed, angry & 0--100; momentary & Single affect/stress items; not diagnoses\\
+CES & PHQ-2 & 0--6; previous two weeks & Depression symptom screener; not a diagnostic outcome\\
+Marian & depressed, anhedonia & 1--4; momentary adaptation & Depression-related states; not interchangeable with standard PHQ-2\\
+All & B8 & Mean of first 8 complete reports & Frozen personal reference\\
+All & L8 & Mean of 8 most recent strictly prior complete reports & Time-local personal reference\\
+All & A50 & $0.5B8+0.5L8$ & Post-hoc anchored stress-test comparator\\
+\bottomrule
+\end{tabular}%
+}
+\end{table*}
+
+\begin{table*}[!htbp]
+\caption{Circular-shift robustness across all outcomes.}\label{tab:s3}
+\centering\small
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}llrrrr@{}}
+\toprule
+Dataset & Outcome & Observed slope & Null mean & Null 95\% range & One-sided $p$\\
+\midrule
+Dejonckheere & Sadness & 0.533 & 0.095 & $-0.216$, 0.434 & 0.005988\\
+Dejonckheere & Stress & 1.568 & 0.166 & $-0.223$, 0.542 & 0.001996\\
+Dejonckheere & Happiness & 1.275 & 0.224 & $-0.050$, 0.538 & 0.001996\\
+Dejonckheere & Relaxation & 1.194 & 0.241 & $-0.091$, 0.573 & 0.001996\\
+Dejonckheere & Anger & 0.523 & 0.062 & $-0.169$, 0.335 & 0.001996\\
+CES & PHQ-2 & 0.110 & 0.019 & $-0.010$, 0.051 & 0.001996\\
+Marian & Depressed mood & 0.059 & 0.005 & $-0.008$, 0.017 & 0.001996\\
+Marian & Anhedonia & 0.052 & 0.008 & $-0.007$, 0.023 & 0.001996\\
+\bottomrule
+\end{tabular}%
+}
+\begin{flushleft}\footnotesize Primary family: sadness, stress, PHQ-2, and depressed mood; Bonferroni threshold 0.0125. Secondary-outcome values are descriptive support.\end{flushleft}
+\end{table*}
+
+\begin{table*}[!htbp]
+\caption{Early--late temporal generalizability in primary outcomes.}\label{tab:s4}
+\centering\small
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}llrrcc@{}}
+\toprule
+Dataset & Outcome & Participants & Quantity & Pearson $r$ (95\% CI) & Spearman $r$\\
+\midrule
+Dejonckheere & Sadness & 100 & Age slope & $-0.100$ ($-0.378$, 0.192) & 0.036\\
+ & & 100 & Mean benefit & 0.650 (0.530, 0.763) & 0.663\\
+Dejonckheere & Stress & 100 & Age slope & $-0.084$ ($-0.305$, 0.159) & 0.060\\
+ & & 100 & Mean benefit & 0.496 (0.352, 0.640) & 0.568\\
+CES & PHQ-2 & 97 & Age slope & $-0.279$ ($-0.447$, $-0.098$) & $-0.290$\\
+ & & 97 & Mean benefit & 0.749 (0.367, 0.884) & 0.407\\
+Marian & Depressed mood & 145 & Age slope & 0.086 ($-0.185$, 0.337) & 0.040\\
+ & & 145 & Mean benefit & 0.690 (0.554, 0.800) & 0.663\\
+\bottomrule
+\end{tabular}%
+}
+\end{table*}
+
+\begin{table*}[!htbp]
+\caption{Exploratory nested participant-held-out ridge results.}\label{tab:s5}
+\centering\small
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}llrrrrc@{}}
+\toprule
+Dataset & Outcome & Participants & RMSE change, \% (95\% CI) & OOF $r$ & Permutation $p$ & Gate\\
+\midrule
+Dejonckheere & Sadness & 100 & $-10.40$ ($-17.70$, $-0.85$) & 0.412 & 0.001996 & Pass\\
+Dejonckheere & Stress & 100 & $-0.41$ ($-4.54$, 5.01) & 0.138 & 0.153693 & Fail\\
+CES & PHQ-2 & 97 & $-0.50$ ($-2.87$, 2.61) & 0.066 & 0.113772 & Fail\\
+Marian & Depressed mood & 145 & $-14.48$ ($-22.19$, $-3.71$) & 0.516 & 0.001996 & Pass\\
+\bottomrule
+\end{tabular}%
+}
+\begin{flushleft}\footnotesize OOF, out-of-fold. Negative RMSE change favours ridge over the training-fold mean. Every primary permutation reran inner tuning and outer fitting.\end{flushleft}
+\end{table*}
+
+\begin{table*}[!htbp]
+\caption{Primary sustained-change stress-test results.}\label{tab:s6}
+\centering\small
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}llcrrrrr@{}}
+\toprule
+Dataset & Outcome & Method & Participants & Signal retained & Original MAE gain, \% & Excess alarm, points (95\% CI)\\
+\midrule
+Dejonckheere & Sadness & B8 & 100 & 1.000 & 0.00 & 3.19 (2.19, 4.25)\\
+ & & A50 & 100 & 0.582 & 8.79 & 2.88 (2.00, 3.88)\\
+ & & L8 & 100 & 0.164 & 9.97 & 1.19 (0.69, 1.75)\\
+Dejonckheere & Stress & B8 & 100 & 1.000 & 0.00 & 10.06 (7.44, 13.00)\\
+ & & A50 & 100 & 0.582 & 12.78 & 3.94 (2.69, 5.13)\\
+ & & L8 & 100 & 0.164 & 18.27 & 2.06 (1.31, 2.88)\\
+CES & PHQ-2 & B8 & 71 & 1.000 & 0.00 & 5.28 (2.99, 7.83)\\
+ & & A50 & 71 & 0.582 & 15.73 & 5.02 (2.46, 8.28)\\
+ & & L8 & 71 & 0.164 & 23.38 & 1.94 (1.06, 2.90)\\
+Marian & Depressed mood & B8 & 141 & 1.000 & 0.00 & 5.14 (3.50, 7.05)\\
+ & & A50 & 141 & 0.582 & 16.42 & 3.41 (2.48, 4.43)\\
+ & & L8 & 141 & 0.164 & 27.95 & 1.91 (1.33, 2.53)\\
+\bottomrule
+\end{tabular}%
+}
+\begin{flushleft}\footnotesize Primary scenario: one pooled within-person outcome SD, midpoint onset, eight-report ramp, and eight-report plateau. Signal-retention values are deterministic under the fixed schedule. Excess alarm is injected detection rate minus matched-original false-alarm rate; intervals use participant bootstrap resampling. Thresholds are methodological, not clinical.\end{flushleft}
+\end{table*}
+
+\begin{table*}[!htbp]
+\caption{Signal-retention sensitivity by ramp length.}\label{tab:s7}
+\centering\small
+\begin{tabular}{@{}lccc@{}}
+\toprule
+Ramp length & B8 & A50 & L8\\
+\midrule
+4 reports & 1.000 & 0.645 & 0.289\\
+8 reports & 1.000 & 0.582 & 0.164\\
+16 reports & 1.000 & 0.541 & 0.082\\
+\bottomrule
+\end{tabular}
+\begin{flushleft}\footnotesize Values were identical across amplitudes, eligible onset positions, and outcomes because retention follows from the fixed update rule and ramp geometry. Of 144 prespecified dataset--outcome--scenario combinations, 140 were analysed and four were recorded as ineligible because no participant retained the required post-onset horizon. Complete data-dependent alarm summaries are supplied as source data.\end{flushleft}
+\end{table*}
+
+\begin{table*}[!htbp]
+\caption{Reproducibility record.}\label{tab:s8}
+\centering\small
+\begin{tabularx}{\textwidth}{@{}lX@{}}
+\toprule
+Item & Recorded value\\
+\midrule
+Environment & Python 3.12.3; NumPy 2.3.5; pandas 2.3.3; scikit-learn 1.7.2; SciPy 1.17.1 where used\\
+Random seed & 20260918\\
+Equal-weight input SHA-256 & \texttt{\seqsplit{21d0a8c0abf78492d7f87bc2e26208403e07b88a1ec27bac868148366a8717d9}}\\
+Equal-weight protocol SHA-256 & \texttt{\seqsplit{d1249668b8aeb20af76a971cb1425f853d5043fa28a609720d1d2e10d1b448db}}\\
+Circular-shift protocol SHA-256 & \texttt{\seqsplit{7f13ca7ca451cb9abbee8c732dbb53cfbda02f4847bbd2a38b18bfd2148a2fca}}\\
+Temporal-generalizability protocol SHA-256 & \texttt{\seqsplit{ed386a1f42d4e61502c6d9a4e77a00dc8a8f35e1e945298c265eab04da89ec9b}}\\
+Machine-learning protocol SHA-256 & \texttt{\seqsplit{c0756f4d019f07b441de7b4f4d7030f92ce355986796cdef9e296c4e87b99403}}\\
+Stress-test protocol SHA-256 & \texttt{\seqsplit{2c682db3a1cdc5570d23a4b5691bc9bab6755ff6c1d55834d50d731aab7ae1ae}}\\
+Stress-test script SHA-256 & \texttt{\seqsplit{7b145585f4056a47284054e1655beac2f25d968b8d7b341f131fde619905281a}}\\
+\bottomrule
+\end{tabularx}
+\begin{flushleft}\footnotesize Hashes identify the frozen analysis artifacts used for this draft. The public code and protocol repository is available at \url{https://github.com/liaorunqing/psychology}; the frozen snapshot corresponding to this manuscript is release v1.1.0 (\url{https://github.com/liaorunqing/psychology/releases/tag/v1.1.0}). A long-term archival DOI is pending and is not claimed in this version.\end{flushleft}
+\end{table*}
+
+\begin{table*}[!htbp]
+\caption{Absolute participant-balanced error for leakage-safe baseline rules.}\label{tab:s9}
+\centering\small
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}llccccc@{}}
+\toprule
+Dataset & Outcome & B8 & Last & Cumulative & L8 & EWM8\\
+\midrule
+Dejonckheere & Sadness & 11.786/18.489 & 11.115/20.795 & 10.797/16.850 & 10.612/17.152 & 10.282/16.711\\
+Dejonckheere & Stress & 21.094/26.673 & 18.525/27.929 & 18.596/23.358 & 17.239/23.167 & 16.853/22.652\\
+Dejonckheere & Happiness & 17.821/23.034 & 16.411/23.383 & 15.125/19.835 & 14.489/19.522 & 14.106/19.055\\
+Dejonckheere & Relaxation & 20.996/26.312 & 19.577/27.584 & 18.126/23.007 & 17.254/22.750 & 16.859/22.280\\
+Dejonckheere & Anger & 10.670/17.323 & 10.559/20.355 & 9.730/15.771 & 9.580/16.103 & 9.388/15.886\\
+CES & PHQ-2 & 0.975/1.437 & 0.722/1.248 & 0.814/1.178 & 0.747/1.120 & 0.724/1.079\\
+Marian & Depressed mood & 0.526/0.754 & 0.335/0.697 & 0.437/0.635 & 0.379/0.619 & 0.367/0.591\\
+Marian & Anhedonia & 0.567/0.795 & 0.360/0.741 & 0.460/0.667 & 0.398/0.641 & 0.388/0.621\\
+\bottomrule
+\end{tabular}%
+}
+\begin{flushleft}\footnotesize Each cell is MAE/RMSE. Metrics were computed within participant and then averaged across participants. Main Table 1 provides B8 and L8 MAE intervals; comparator contrasts and participant-bootstrap intervals are in main Table 2 and the archived source table. No cross-scale pooling was performed.\end{flushleft}
+\end{table*}
+
+\begin{table*}[!htbp]
+\caption{Bounded-score sensitivity: L8 minus B8.}\label{tab:s10}
+\centering\small
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}llrccc@{}}
+\toprule
+Dataset & Outcome & Participants & Exact accuracy difference (95\% CI) & Within-one difference (95\% CI) & Ordinal MAE difference (95\% CI)\\
+\midrule
+CES & PHQ-2 & 105 & 0.095 (0.050, 0.141) & 0.076 (0.041, 0.113) & $-0.248$ ($-0.350$, $-0.162$)\\
+Marian & Depressed mood & 145 & 0.157 (0.110, 0.204) & 0.020 (0.005, 0.038) & $-0.177$ ($-0.228$, $-0.127$)\\
+Marian & Anhedonia & 145 & 0.148 (0.103, 0.195) & 0.022 (0.005, 0.044) & $-0.171$ ($-0.228$, $-0.120$)\\
+\bottomrule
+\end{tabular}%
+}
+\begin{flushleft}\footnotesize Predictions were rounded and clipped to each outcome's admissible score set. Positive accuracy differences and negative MAE differences favour L8. Intervals use 2,000 participant bootstrap resamples.\end{flushleft}
+\end{table*}
+
+\begin{table*}[!htbp]
+\caption{Analytic target distributions and scale-boundary frequencies.}\label{tab:s11}
+\centering\small
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}llrrccrr@{}}
+\toprule
+Dataset & Outcome & Participants & Targets & Mean (SD) & Range & Floor, \% & Ceiling, \%\\
+\midrule
+Dejonckheere & Sadness & 100 & 7,902 & 11.57 (18.65) & 0--100 & 44.70 & 0.28\\
+Dejonckheere & Stress & 100 & 7,902 & 25.93 (26.48) & 0--100 & 24.92 & 0.72\\
+Dejonckheere & Happiness & 100 & 7,902 & 62.88 (22.69) & 0--100 & 1.04 & 8.01\\
+Dejonckheere & Relaxation & 100 & 7,902 & 62.17 (24.98) & 0--100 & 1.44 & 9.52\\
+Dejonckheere & Anger & 100 & 7,902 & 10.05 (17.41) & 0--100 & 48.86 & 0.25\\
+CES & PHQ-2 & 105 & 4,541 & 1.17 (1.54) & 0--6 & 48.84 & 4.10\\
+Marian & Depressed mood & 145 & 7,071 & 1.41 (0.75) & 1--4 & 71.50 & 2.97\\
+Marian & Anhedonia & 145 & 7,071 & 1.55 (0.87) & 1--4 & 65.54 & 5.46\\
+\bottomrule
+\end{tabular}%
+}
+\begin{flushleft}\footnotesize Summaries describe post-calibration targets, not all scheduled opportunities. Floor and ceiling denote the minimum and maximum admissible score, respectively.\end{flushleft}
+\end{table*}
+
+\begin{table*}[!htbp]
+\caption{CES demographic information available in the public release.}\label{tab:s12}
+\centering\small
+\begin{tabular}{@{}llrr@{}}
+\toprule
+Variable & Level & Count & Percent\\
+\midrule
+Gender & Female & 71 & 67.6\\
+ & Male & 32 & 30.5\\
+ & Both & 1 & 1.0\\
+ & Missing & 1 & 1.0\\
+Race & White & 65 & 61.9\\
+ & Asian & 24 & 22.9\\
+ & Black & 5 & 4.8\\
+ & More than one & 5 & 4.8\\
+ & Other/Hispanic & 3 & 2.9\\
+ & Other released categories & 2 & 1.9\\
+ & Missing & 1 & 1.0\\
+\bottomrule
+\end{tabular}
+\begin{flushleft}\footnotesize Percentages use the 105-participant CES analytic sample. Equivalent harmonized demographic fields were not available in the two openESM analysis files; population descriptions therefore follow their source reports. Categories reproduce the public CES coding and should not be interpreted as investigator-assigned identities.\end{flushleft}
+\end{table*}
+
+\begin{table*}[!htbp]
+\caption{Window-length sensitivity on common targets after 12 complete reports.}\label{tab:s13}
+\centering\small
+\begin{tabular}{@{}llrrrr@{}}
+\toprule
+Dataset & Outcome & $K=4$ & $K=6$ & $K=8$ & $K=12$\\
+\midrule
+Dejonckheere & Sadness & $-10.10$ & $-11.21$ & $-10.49$ & $-9.23$\\
+ & Stress & $-19.38$ & $-19.13$ & $-19.20$ & $-15.71$\\
+ & Happiness & $-22.27$ & $-21.10$ & $-19.57$ & $-15.82$\\
+ & Relaxation & $-20.08$ & $-19.57$ & $-18.72$ & $-15.09$\\
+ & Anger & $-7.80$ & $-6.99$ & $-10.88$ & $-10.54$\\
+CES & PHQ-2 & $-29.00$ & $-28.01$ & $-26.52$ & $-22.82$\\
+Marian & Depressed mood & $-37.89$ & $-33.87$ & $-29.92$ & $-23.98$\\
+ & Anhedonia & $-40.68$ & $-36.40$ & $-31.66$ & $-24.85$\\
+\bottomrule
+\end{tabular}
+\begin{flushleft}\footnotesize Values are participant-balanced relative MAE changes (\%), with negative values favouring the recent $K$-report mean. The common target set contained 7,502 targets per Dejonckheere outcome (100 participants), 4,127 PHQ-2 targets (99 participants), and 6,491 targets per Marian outcome (145 participants). Participant-bootstrap intervals excluded zero except for anger at $K=4$ (95\% CI $-14.62$ to 0.15) and $K=6$ ($-13.52$ to 0.15). Exact intervals for every cell are supplied in the machine-readable source table.\end{flushleft}
+\end{table*}
+
+\begin{table*}[!htbp]
+\caption{Repeated-origin sensitivity in the four primary outcomes.}\label{tab:s14}
+\centering\small
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}lllrrcc@{}}
+\toprule
+Dataset & Outcome & Origin & Participants & Targets & MAE change, \% (95\% CI) & Mean age slope (95\% CI)\\
+\midrule
+Dejonckheere & Sadness & Early & 100 & 7,102 & $-10.95$ ($-16.41$, $-5.39$) & 0.418 (0.094, 0.792)\\
+ & & Middle & 100 & 3,828 & $-0.39$ ($-6.96$, 6.46) & 0.457 (0.018, 0.895)\\
+ & & Late & 100 & 500 & $-7.67$ ($-20.35$, 6.01) & $-0.059$ ($-0.768$, 0.686)\\
+Dejonckheere & Stress & Early & 100 & 7,102 & $-19.95$ ($-24.30$, $-15.67$) & 1.236 (0.616, 1.857)\\
+ & & Middle & 100 & 3,828 & $-14.44$ ($-20.22$, $-8.64$) & 0.541 ($-0.083$, 1.202)\\
+ & & Late & 100 & 500 & $-11.59$ ($-20.28$, $-2.70$) & $-0.026$ ($-1.128$, 1.084)\\
+CES & PHQ-2 & Early & 93 & 3,724 & $-28.90$ ($-36.99$, $-20.59$) & 0.084 (0.034, 0.140)\\
+ & & Middle & 93 & 2,114 & $-15.87$ ($-22.03$, $-9.89$) & 0.034 ($-0.007$, 0.077)\\
+ & & Late & 93 & 465 & $-13.69$ ($-21.55$, $-5.02$) & 0.048 ($-0.008$, 0.108)\\
+Marian & Depressed mood & Early & 145 & 5,911 & $-31.63$ ($-37.88$, $-25.22$) & 0.046 (0.030, 0.064)\\
+ & & Middle & 145 & 3,353 & $-26.30$ ($-33.69$, $-19.09$) & 0.019 ($-0.002$, 0.040)\\
+ & & Late & 145 & 725 & $-21.42$ ($-33.99$, $-8.11$) & 0.004 ($-0.021$, 0.027)\\
+\bottomrule
+\end{tabular}%
+}
+\begin{flushleft}\footnotesize Negative MAE changes favour L8. Positive slopes indicate that the L8 advantage grows with log report-distance from that pseudo-origin. Each origin used eight calibration reports, eight washout reports, and at least five targets. Origins share participants and observations and are not independent replications.\end{flushleft}
+\end{table*}
+
+\begin{table*}[!htbp]
+\caption{Recall-period and Marian observation-process sensitivities.}\label{tab:s15}
+\centering\small
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}lllrrcc@{}}
+\toprule
+Dataset & Outcome & Analysis & Participants & Targets & MAE change, \% (95\% CI) & Mean age slope (95\% CI)\\
+\midrule
+CES & PHQ-2 & Previous-assessment gap $\geq14$ days & 105 & 4,541 & $-23.38$ ($-30.42$, $-16.62$) & 0.105 (0.062, 0.157)\\
+Marian & Depressed mood & Unweighted & 145 & 7,071 & $-27.95$ ($-33.18$, $-22.14$) & 0.059 (0.042, 0.079)\\
+ & & IPW & 145 & 7,071 & $-28.32$ ($-33.81$, $-22.57$) & 0.060 (0.041, 0.079)\\
+Marian & Anhedonia & Unweighted & 145 & 7,071 & $-29.80$ ($-35.15$, $-23.84$) & 0.052 (0.034, 0.073)\\
+ & & IPW & 145 & 7,071 & $-30.07$ ($-35.34$, $-24.38$) & 0.054 (0.035, 0.075)\\
+\bottomrule
+\end{tabular}%
+}
+\begin{flushleft}\footnotesize Negative MAE changes favour L8. Every CES analytic target met the 14-day rule; no below-14-day stratum existed. Marian IPW used participant-disjoint response probabilities, clipped to 0.10--0.99 and normalized within participant. IPW assumes missing at random conditional on observed history and cannot recover unreported states.\end{flushleft}
+\end{table*}
+
+\end{document}

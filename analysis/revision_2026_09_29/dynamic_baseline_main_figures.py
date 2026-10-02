@@ -12,9 +12,8 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "analysis" / "outputs" / "revision_2026_09_29"
-MANUSCRIPT = ROOT / "submission" / "bmc_dynamic_baseline_manuscript_2026-09-30"
-FIGURES = MANUSCRIPT / "figures"
-SOURCE = MANUSCRIPT / "source_data"
+FIGURES = ROOT / "figures" / "rendered"
+SOURCE = ROOT / "figures" / "source_data"
 SEED = 20260918
 BOOTSTRAPS = 2000
 
@@ -329,7 +328,6 @@ def figure_4() -> None:
     ax_c.axhline(1.0, color="#BBBBBB", lw=0.6); ax_c.axvline(0, color="#BBBBBB", lw=0.6)
     for (dataset, outcome), group in joined.groupby(["dataset", "outcome"]):
         current = group.set_index("method").loc[["B8", "A50", "L8"]].reset_index()
-        ax_c.plot(current.mae_improvement_percent, current.signal_retention, color=COLORS[dataset], alpha=0.50, lw=1.0)
         for row in current.itertuples():
             ax_c.scatter(row.mae_improvement_percent, row.signal_retention, s=30,
                          color=COLORS[row.method], edgecolor=COLORS[dataset], linewidth=0.8, zorder=3)

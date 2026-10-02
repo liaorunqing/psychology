@@ -65,3 +65,38 @@ def test_baseline_age_strata_match_frozen_boundaries() -> None:
         "(0,90]", "(0,90]", "(90,365]", "(365,730]", ">730",
         "1-7", "1-7", "8-21", "22-42", ">=43",
     ]
+
+
+def test_window_sensitivity_uses_common_strictly_prior_targets() -> None:
+    module = load("major_revision_sensitivity")
+    values = np.arange(30, dtype=float)
+    series = {("Toy", "score", "p1"): (values, np.arange(30))}
+    four = module.window_rows(series, 4)
+    twelve = module.window_rows(series, 12)
+    assert len(four) == len(twelve) == 18
+    assert four.iloc[0].B == np.mean([0, 1, 2, 3])
+    assert four.iloc[0].L == np.mean([8, 9, 10, 11])
+    assert twelve.iloc[0].L == np.mean(np.arange(12))
+
+
+def test_pseudo_origin_enforces_eight_report_washout() -> None:
+    module = load("major_revision_sensitivity")
+    values = np.arange(30, dtype=float)
+    series = {("Toy", "score", "p1"): (values, np.arange(30))}
+    early = module.pseudo_origin_rows(series, "early")
+    assert early.iloc[0].actual == 16
+    assert early.iloc[0].B == np.mean(np.arange(8))
+    assert early.iloc[0].L == np.mean(np.arange(8, 16))
+
+
+def test_future_values_cannot_change_first_pseudo_origin_prediction() -> None:
+    module = load("major_revision_sensitivity")
+    base_values = np.arange(30, dtype=float)
+    changed_values = base_values.copy()
+    changed_values[16:] += 1000
+    base = {("Toy", "score", "p1"): (base_values, np.arange(30))}
+    changed = {("Toy", "score", "p1"): (changed_values, np.arange(30))}
+    first = module.pseudo_origin_rows(base, "early").iloc[0]
+    second = module.pseudo_origin_rows(changed, "early").iloc[0]
+    assert first.B == second.B
+    assert first.L == second.L

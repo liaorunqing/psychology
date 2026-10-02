@@ -1,0 +1,26 @@
+{
+  "status": "post-review sensitivity; not preregistered",
+  "timestamp_utc": "2026-10-01T16:39:15.634285+00:00",
+  "seed": 20260918,
+  "bootstrap_resamples": 2000,
+  "protocol_sha256": "6640b4ad6e7aee89942e32ff78bb4c38b41a200ad2b1b40382a57f1bb2cb05a5",
+  "script_sha256": "712afe2a577193f2855f2f2664495a4b856cb58a601dc0eca12633edb3370523",
+  "inputs": {
+    "dejonckheere": "2cabd3f416f2dd5707b1623de5ac8cdba5de2834616e2a8df2a52e8c5473bf53",
+    "marian": "4adb3dc0caada5c6ba4fcc8899a7a5f4993ccbc73570e66027303470e8e31e66",
+    "equal_predictions": "21d0a8c0abf78492d7f87bc2e26208403e07b88a1ec27bac868148366a8717d9",
+    "marian_response": "07cdbe6184cadcb7a0abea8fd562b7047b8ba1d553fa9cf6ada163023a16e89d"
+  },
+  "software": {
+    "python": "3.12.3",
+    "numpy": "2.3.5",
+    "pandas": "2.3.3"
+  },
+  "checks": {
+    "strictly_prior_predictors": true,
+    "common_targets_across_windows": true,
+    "pseudo_origin_eight_report_washout": true,
+    "participant_level_bootstrap": true,
+    "ipw_probabilities_out_of_fold_by_participant": true
+  }
+}
