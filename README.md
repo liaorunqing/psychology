@@ -1,8 +1,8 @@
-# When early personal baselines lose predictive relevance
+# Early versus recent personal histories in repeated psychological self-reports
 
-Reproducibility materials for **“When early personal baselines lose predictive relevance: cross-timescale evidence from repeated psychological self-reports.”**
+Reproducibility materials for **“Early versus recent personal histories in repeated psychological self-reports: a cross-timescale secondary analysis.”**
 
-This repository contains the frozen analysis scripts, participant-level validation tests, and preregistered/frozen analysis protocols used to compare an early personal baseline with recent and continuously updated baselines across three intensive-longitudinal psychological datasets.
+This repository contains versioned analysis scripts, participant-level validation tests, and dated protocols used to compare an early personal reference with recent and continuously updated histories across three intensive-longitudinal psychological datasets. Protocol timing and post hoc status are stated explicitly; the complete study was not preregistered.
 
 ## Scope
 
@@ -14,6 +14,10 @@ The release covers:
 - participant-level reliability and temporal-generalizability analyses;
 - nested prediction of future updating benefit;
 - the sustained-deterioration safety experiment;
+- a participant-matched stationary AR(1) falsification analysis;
+- expanded leakage-safe comparators, including median, mode, and online AR(1);
+- EMA first-day and prompt-timing sensitivities;
+- participant-SD-standardized temporal-generalizability analyses;
 - reviewer-requested comparator and bounded-score analyses;
 - window-length, CES recall-gap, Marian inverse-observation-weighting, and
   repeated pseudo-origin sensitivities; and
@@ -82,8 +86,9 @@ Please cite the accompanying article and this repository. Machine-readable citat
 ## Archiving status
 
 The live code is available at <https://github.com/liaorunqing/psychology>.
-Release `v1.1.0` is the frozen code and aggregate-output snapshot corresponding
-to the current manuscript. A long-term archival DOI will be added after
+Release `v1.2.0` is the external-peer-review revision containing the stationary
+AR(1) null, expanded comparators, EMA timing checks, revised figures, and revised
+manuscript. A long-term archival DOI will be added after
 repository deposition; no DOI is claimed in this version.
 
 ## License

@@ -100,3 +100,13 @@ def test_future_values_cannot_change_first_pseudo_origin_prediction() -> None:
     second = module.pseudo_origin_rows(changed, "early").iloc[0]
     assert first.B == second.B
     assert first.L == second.L
+
+
+def test_stationary_ar1_revision_helpers_preserve_strict_history() -> None:
+    module = load("external_peer_review_robustness")
+    values = np.arange(12, dtype=float)
+    prediction = module.rolling_mean(values)
+    changed = values.copy()
+    changed[8:] = 1000
+    assert np.isclose(prediction[0], np.mean(np.arange(8)))
+    assert np.isclose(module.rolling_mean(changed)[0], prediction[0])

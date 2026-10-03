@@ -12,8 +12,9 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "analysis" / "outputs" / "revision_2026_09_29"
-FIGURES = ROOT / "figures" / "rendered"
-SOURCE = ROOT / "figures" / "source_data"
+MANUSCRIPT = ROOT / "submission" / "bmc_dynamic_baseline_manuscript_2026-09-30"
+FIGURES = MANUSCRIPT / "figures"
+SOURCE = MANUSCRIPT / "source_data"
 SEED = 20260918
 BOOTSTRAPS = 2000
 
@@ -113,16 +114,17 @@ def figure_1() -> None:
 
     ax_b.axis("off"); ax_b.set_xlim(0, 3); ax_b.set_ylim(0, 1)
     cards = [
-        (0.02, COLORS["Dejonckheere"], "Dejonckheere", "n = 100 | 14 days\n7 prompts/day | five states"),
+        (0.02, COLORS["Dejonckheere"], "Dejonckheere", "n = 100 | 14 days\n7 prompts/day | 5 outcomes"),
         (1.02, COLORS["CES"], "CES", "n = 105 | up to 4 years\nrepeated PHQ-2"),
-        (2.02, COLORS["Marian"], "Marian", "n = 145 | 21 days\n3 prompts/day | two states"),
+        (2.02, COLORS["Marian"], "Marian", "n = 145 | 21 days\n3 prompts/day | 2 outcomes"),
     ]
     for x0, color, title, body in cards:
         box = FancyBboxPatch((x0, 0.14), 0.9, 0.7, boxstyle="round,pad=0.02,rounding_size=0.03",
                              facecolor="white", edgecolor=color, linewidth=1.2)
         ax_b.add_patch(box)
         ax_b.text(x0 + 0.45, 0.68, title, ha="center", va="center", fontweight="bold", color=color)
-        ax_b.text(x0 + 0.45, 0.42, body, ha="center", va="center", linespacing=1.45)
+        ax_b.text(x0 + 0.45, 0.42, body, ha="center", va="center", linespacing=1.35,
+                  fontsize=6.2)
     ax_b.text(1.5, 0.02, "Contrasting measurement timescales; no pooling of raw outcome units", ha="center", color="#555555")
     panel_label(ax_b, "b")
 
@@ -147,48 +149,65 @@ def figure_1() -> None:
 
 
 def figure_2() -> None:
-    overall = pd.read_csv(OUT / "equal_weight_mean_baseline_overall_contrasts.csv")
-    slopes = pd.read_csv(OUT / "equal_weight_mean_baseline_slope_summary.csv")
-    predictions = pd.read_parquet(OUT / "equal_weight_mean_baseline_predictions.parquet")
-    within = predictions.groupby(["dataset", "outcome", "participant"], sort=False).actual.var().groupby(level=[0, 1]).mean().pow(0.5)
-    slope_plot = slopes.copy()
-    slope_plot["within_sd"] = [within.loc[(r.dataset, r.outcome)] for r in slope_plot.itertuples()]
-    for col in ["mean_slope", "ci_low", "ci_high"]:
-        slope_plot[f"std_{col}"] = slope_plot[col] / slope_plot.within_sd
-    order = list(overall.sort_values(["dataset", "outcome"])[["dataset", "outcome"]].itertuples(index=False, name=None))
-    order = [x for x in order if x in PRIMARY] + [x for x in order if x not in PRIMARY]
-    overall["order"] = overall.apply(lambda r: order.index((r.dataset, r.outcome)), axis=1)
-    slope_plot["order"] = slope_plot.apply(lambda r: order.index((r.dataset, r.outcome)), axis=1)
-    overall = overall.sort_values("order", ascending=False)
-    slope_plot = slope_plot.sort_values("order", ascending=False)
-    overall.to_csv(SOURCE / "Figure_2a_relative_mae.csv", index=False)
-    slope_plot.to_csv(SOURCE / "Figure_2b_standardized_age_slope.csv", index=False)
+    null = pd.read_csv(OUT / "peer_review_stationary_ar1_null.csv")
+    null = null[(null.role == "primary") &
+                (null.statistic == "participant_balanced_mae_B8_minus_L8")].copy()
+    comparator = pd.read_csv(OUT / "peer_review_comparator_summary.csv")
+    predictions = pd.read_parquet(OUT / "peer_review_comparator_predictions.parquet")
+    scale = (predictions.groupby(["dataset", "outcome", "participant"], sort=False).person_sd.first()
+             .groupby(level=[0, 1]).mean())
+    ordered = [("Dejonckheere", "sad"), ("Dejonckheere", "stressed"),
+               ("CES", "phq2"), ("Marian", "depressed")]
+    null = null.set_index(["dataset", "outcome"]).loc[ordered].reset_index()
+    null["scale"] = [scale.loc[(row.dataset, row.outcome)] for row in null.itertuples()]
+    for column in ["observed", "null_mean", "null_ci_low", "null_ci_high"]:
+        null[f"standardized_{column}"] = null[column] / null.scale
+    methods = ["L8", "EWM8", "Median8", "OnlineAR1"]
+    comparison = comparator[(comparator.method.isin(methods)) &
+                            (comparator.apply(lambda row: (row.dataset, row.outcome) in PRIMARY, axis=1))].copy()
+    comparison["rank"] = comparison.apply(lambda row: ordered.index((row.dataset, row.outcome)), axis=1)
+    comparison = comparison.sort_values(["rank", "method"])
+    null.to_csv(SOURCE / "Figure_2a_stationary_ar1_null.csv", index=False)
+    comparison.to_csv(SOURCE / "Figure_2b_predictor_comparison.csv", index=False)
 
-    fig, axes = plt.subplots(1, 2, figsize=(7.2, 4.3), sharey=True, gridspec_kw={"wspace": 0.08})
-    for ax, data, estimate, low, high, xlabel in [
-        (axes[0], overall, "relative_mae_percent", "mae_ci_low", "mae_ci_high", "L8 relative to B8: MAE change (%)"),
-        (axes[1], slope_plot, "std_mean_slope", "std_ci_low", "std_ci_high", "Age slope (outcome SD per age SD)"),
-    ]:
-        ypos = np.arange(len(data))
-        for pos, row in zip(ypos, data.itertuples()):
-            color = COLORS[row.dataset]
-            marker = "o" if (row.dataset, row.outcome) in PRIMARY else "s"
-            ax.errorbar(getattr(row, estimate), pos,
-                        xerr=[[getattr(row, estimate) - getattr(row, low)], [getattr(row, high) - getattr(row, estimate)]],
-                        fmt=marker, color=color, ecolor=color, markersize=4.2, capsize=2, lw=1.0)
-        ax.axvline(0, color="#555555", lw=0.8, ls="--")
-        ax.set_xlabel(xlabel)
-        ax.grid(axis="x", color="#E5E5E5", lw=0.6)
-    labels = [f"{r.dataset}: {LABELS[(r.dataset, r.outcome)]}" for r in overall.itertuples()]
-    axes[0].set_yticks(np.arange(len(labels)), labels)
-    axes[0].set_title("Prediction error")
-    axes[1].set_title("Growth of update benefit with baseline age")
-    axes[0].text(-0.03, -0.13, "← lower error with recent history", transform=axes[0].transAxes, color=COLORS["L8"])
-    axes[1].text(0.45, -0.13, "larger recent-history advantage →", transform=axes[1].transAxes, color=COLORS["L8"])
-    legend = [Line2D([0], [0], marker="o", color=COLORS[d], lw=0, label=d) for d in ["Dejonckheere", "CES", "Marian"]]
-    legend += [Line2D([0], [0], marker="o", color="#555555", lw=0, label="Primary"),
-               Line2D([0], [0], marker="s", color="#555555", lw=0, label="Secondary")]
-    axes[1].legend(handles=legend, loc="lower right")
+    fig, axes = plt.subplots(1, 2, figsize=(7.2, 4.1), gridspec_kw={"wspace": 0.42})
+    y = np.arange(len(null))[::-1]
+    for position, row in zip(y, null.itertuples()):
+        axes[0].errorbar(row.standardized_null_mean, position,
+                         xerr=[[row.standardized_null_mean-row.standardized_null_ci_low],
+                               [row.standardized_null_ci_high-row.standardized_null_mean]],
+                         fmt="D", ms=3.8, color="#8C8C8C", ecolor="#8C8C8C", capsize=2)
+        axes[0].plot(row.standardized_observed, position, "o", ms=4.5,
+                     color=COLORS[row.dataset])
+    axes[0].axvline(0, color="#555555", lw=.8, ls="--")
+    axes[0].set_yticks(y, [LABELS[(r.dataset, r.outcome)] for r in null.itertuples()])
+    axes[0].set_xlabel("B8 minus L8 MAE (participant SD)")
+    axes[0].set_title("Observed advantage versus stationary AR(1) null", loc="left")
+    axes[0].grid(axis="x", color="#E5E5E5", lw=.6)
+    axes[0].legend(handles=[
+        Line2D([0], [0], marker="o", color="none", markerfacecolor="#0072B2",
+               markeredgecolor="#0072B2", label="Observed"),
+        Line2D([0], [0], marker="D", color="none", markerfacecolor="#8C8C8C",
+               markeredgecolor="#8C8C8C", label="AR(1) null mean and 95% interval")],
+        loc="upper center", bbox_to_anchor=(.5, -.18), ncol=1, frameon=False)
+
+    offsets = {"L8": -.18, "EWM8": -.06, "Median8": .06, "OnlineAR1": .18}
+    method_colors = {"L8": "#0072B2", "EWM8": "#E69F00", "Median8": "#009E73",
+                     "OnlineAR1": "#CC79A7"}
+    for rank, key in enumerate(ordered):
+        subset = comparison[(comparison.dataset == key[0]) & (comparison.outcome == key[1])]
+        for row in subset.itertuples():
+            axes[1].plot(row.relative_mae_percent_vs_B8, y[rank] + offsets[row.method],
+                         "o", ms=4.0, color=method_colors[row.method])
+    axes[1].axvline(0, color="#555555", lw=.8, ls="--")
+    axes[1].set_yticks(y, [LABELS[key] for key in ordered])
+    axes[1].set_xlabel("MAE change relative to B8 (%)")
+    axes[1].set_title("Leakage-safe prediction rules", loc="left")
+    axes[1].grid(axis="x", color="#E5E5E5", lw=.6)
+    axes[1].legend(handles=[Line2D([0], [0], marker="o", color="none",
+                                       markerfacecolor=method_colors[m], markeredgecolor=method_colors[m], label=m)
+                                  for m in methods], loc="upper center",
+                   bbox_to_anchor=(.5, -.18), ncol=2, frameon=False)
     panel_label(axes[0], "a"); panel_label(axes[1], "b")
     save_figure(fig, "Figure_2_cross_dataset_effects")
 
@@ -248,7 +267,8 @@ def figure_3() -> None:
         for key in [("Dejonckheere", "sad"), ("Dejonckheere", "stressed"),
                     ("CES", "phq2"), ("Marian", "depressed")]
     ]
-    ax.legend(handles=primary_handles, loc="upper left", title="Primary outcomes")
+    ax.legend(handles=primary_handles, loc="upper center", bbox_to_anchor=(.5, 1.23),
+              ncol=2, title="Primary outcomes")
     ax.text(0.03, 0.02, "Secondary outcomes shown in grey", transform=ax.transAxes, color="#666666", fontsize=6.2)
     panel_label(ax, "a")
 
@@ -271,7 +291,7 @@ def figure_3() -> None:
     ax.set_xlim(-0.55, 1.0)
     ax.set_xlabel("Early--late Pearson correlation")
     ax.grid(axis="x", color="#E5E5E5", lw=0.6)
-    ax.legend(loc="lower right")
+    ax.legend(loc="upper center", bbox_to_anchor=(.5, 1.18), ncol=2)
     panel_label(ax, "b")
     save_figure(fig, "Figure_3_group_and_individual_patterns")
 

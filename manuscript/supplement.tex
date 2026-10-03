@@ -1,4 +1,4 @@
-% Supplementary information, major revision 2 October 2026.
+% Supplementary information, external-peer-review revision 2 October 2026.
 \documentclass[pdflatex,sn-vancouver-num]{sn-jnl}
 \usepackage{booktabs}
 \usepackage{tabularx}
@@ -13,7 +13,7 @@
 \begin{document}
 \renewcommand{\thetable}{S\arabic{table}}
 
-\title{Supplementary information for: When early personal baselines lose predictive relevance}
+\title{Supplementary information for: Early versus recent personal histories in repeated psychological self-reports}
 \author[1]{\fnm{Runqing} \sur{Liao}}\email{202411055222@stu.hstc.edu.cn}
 \author*[1]{\fnm{Zhining} \sur{Wang}}\email{mathwangzhining@163.com}
 \affil*[1]{\orgdiv{School of Mathematics and Statistics}, \orgname{Hanshan Normal University}, \orgaddress{\city{Chaozhou}, \postcode{521041}, \country{China}}}
@@ -23,7 +23,7 @@
 
 All analyses used de-identified secondary data. Within each dataset--outcome pair, complete reports were ordered chronologically. The first eight complete reports formed the calibration block. A participant entered an equal-information prediction analysis only if at least one later complete target existed; participant-specific age-slope analyses additionally required at least five targets and variation in baseline age. No statistical outlier rule was used to remove observed outcome values. Scale-range validation occurred before analysis. Repeated reports were never treated as independent participants.
 
-The study used a staged evidential chronology. CES and Marian supported initial mechanism development. Outcomes, history budget, missingness checks, participant weighting, and the success criterion were then frozen before inspecting the Dejonckheere self-report outcome associations. Equal-weight, circular-shift, temporal-stability, machine-learning, and semi-synthetic safety analyses followed as explicitly post-hoc challenges. Window-length, recall-separation, Marian IPW, and pseudo-origin analyses were fixed and run in response to review. The embargoed OSF registration concerned a different CES--PSYCHE-D activity and sleep question and is not claimed as preregistration for the present study.
+The study used a staged evidential chronology. CES and Marian supported initial mechanism development. Outcomes, history budget, missingness checks, participant weighting, and the success criterion were then frozen before inspecting the Dejonckheere self-report outcome associations. Equal-weight extensions and all subsequent null, comparator, temporal-generalizability, machine-learning, semi-synthetic, window, observation-process, and pseudo-origin analyses are explicitly post hoc. The embargoed OSF registration (\url{https://osf.io/n2j3m/}) concerned a separate CES--PSYCHE-D activity and sleep question and is not claimed as preregistration for the present study.
 
 \section{Supplementary Methods 2: equal-information estimands and null models}
 
@@ -35,6 +35,8 @@ L8_{it}=\frac{1}{8}\sum_{j=t-8}^{t-1}y_{ij}.
 Update benefit was $U_{it}=|y_{it}-B8_i|-|y_{it}-L8_{it}|$. Baseline age was elapsed days from the eighth report in CES and scheduled-opportunity distance in the two experience-sampling datasets. Age was transformed as $\log(1+\mathrm{age})$ and divided by its dataset--outcome target-level standard deviation. For participants with sufficient targets, an ordinary least-squares slope of $U_{it}$ on within-person-centred scaled age was fitted. The arithmetic mean of participant slopes was the inferential estimand.
 
 Time permutation randomly reordered non-missing scores within participant while retaining assessment positions and target counts. The circular-shift challenge selected a non-zero cyclic shift within participant, preserving the score multiset, missing positions, and cyclic adjacent-pair structure while relocating the study start. B8, L8, target errors, and slopes were reconstructed for every one of 500 draws. One-sided Monte Carlo values were $(1+k)/501$. Four primary outcomes used a Bonferroni threshold of 0.0125.
+
+The principal post hoc null was a participant-matched stationary Gaussian AR(1) parametric bootstrap. For each participant and outcome, the mean, variance, and lag-1 coefficient were estimated from the complete observed sequence. Participant coefficients were shrunk towards the outcome-level estimate and clipped to $[-0.95,0.95]$. Five thousand stationary sequences retained observed series lengths and missing-position patterns. B8, L8, participant-balanced B8-minus-L8 MAE, and mean age gradients were reconstructed. One-sided Monte Carlo values were $(1+k)/5001$. The model permits the recent-history advantage expected under stationary persistence and is used as a falsification device, not as a substantive generative claim.
 
 \section{Supplementary Methods 3: temporal generalizability and machine learning}
 
@@ -54,13 +56,13 @@ For the secondary alarm comparison, each outcome--method threshold was the weigh
 
 Participant-balanced metrics were calculated within participant before averaging. Unless otherwise stated, intervals used 2,000 bootstrap resamples of participants. These intervals quantify sampling variation among observed participants, conditional on the selected datasets and analysis decisions. They are not intervals over hypothetical datasets. All random procedures used seed 20260918. Automated tests verified strict temporal ordering, current/future exclusion, equal eight-value construction, disjoint participant folds, nested training-only preprocessing, null-model invariants, injection ordering, participant-level resampling, and output reconciliation.
 
-\section{Supplementary Methods 6: post-review comparator and bounded-score analyses}
+\section{Supplementary Methods 6: post hoc comparator and bounded-score analyses}
 
-Three additional predictors were computed from strictly prior reports. ``Last'' was the immediately preceding complete value. ``Cumulative'' was the mean of all complete values before the target. EWM8 was initialized at B8 and then updated as $m_t=(1-2/9)m_{t-1}+(2/9)y_{t-1}$, so the target $y_t$ never entered its own prediction. No outcome-specific tuning was performed. For PHQ-2 and Marian outcomes, B8 and L8 predictions were rounded and clipped to the admissible score set before computing exact accuracy, within-one accuracy, and absolute ordinal error. These additions were specified after review of the primary results and are interpreted descriptively.
+Additional predictors were computed from strictly prior reports. ``Last'' was the immediately preceding complete value. ``Cumulative'' was the mean of all complete values before the target. EWM8 was initialized at B8 and then updated as $m_t=(1-2/9)m_{t-1}+(2/9)y_{t-1}$. Median8 and, for bounded integer outcomes, Mode8 summarized the preceding eight reports. Online AR(1) re-estimated an intercept and lag coefficient from preceding reports at each target and clipped the coefficient to the stationary range. OracleMean used the complete participant series and is a diagnostic, non-deployable comparator. For PHQ-2 and Marian outcomes, B8 and L8 predictions were rounded and clipped to the admissible score set before computing exact accuracy, within-one accuracy, and absolute ordinal error. Participant-SD-standardized MAE divided each participant's MAE by that participant's observed within-person standard deviation before averaging. These additions are interpreted descriptively.
 
 \section{Supplementary Methods 7: origin, window, and observation sensitivities}
 
-These analyses were written into a dated post-review protocol before execution. Window-length analyses compared early and recent equal-weight means for $K=4,6,8,$ and 12 on common targets beginning at complete-report index 13. CES recall separation used the elapsed days between the target and immediately preceding complete PHQ-2 assessment. Marian response probabilities came from five participant-disjoint folds of an L2 logistic model using strictly prior completion rate, current missing streak, day, and beep; inverse probabilities were clipped to 0.10--0.99 and normalized within participant. Pseudo-origin placement used the retrospectively observed complete-series length; consequently, repeated-origin results diagnose dependence on the original study start but do not represent prospective rolling-origin validation.
+These analyses were written into dated post hoc protocols before execution. Window-length analyses compared early and recent equal-weight means for $K=4,6,8,$ and 12 on common targets beginning at complete-report index 13. CES recall separation used the elapsed days between the target and immediately preceding complete PHQ-2 assessment. Marian response probabilities came from five participant-disjoint folds of an L2 logistic model using strictly prior completion rate, current missing streak, day, and beep; inverse probabilities were clipped to 0.10--0.99 and normalized within participant. EMA timing analyses either removed all day-1 observations and re-established the first eight complete reports or removed prompt-position means estimated without future target information. Pseudo-origin placement used the retrospectively observed complete-series length; consequently, repeated-origin results diagnose dependence on the original study start but do not represent prospective rolling-origin validation.
 
 For repeated-origin analyses, a participant required at least 21 complete observations. Early, middle, and late origins were the first eligible index, the midpoint of the eligible starting-index range, and the final index retaining at least five evaluation targets. Eight reports formed the fixed baseline, the next eight reports were a washout, and evaluation began at the seventeenth report after each origin. B8 and L8 therefore shared no calibration values at the first evaluated target. Origins were not independent because they reused participants and sometimes observations. All contrasts and slope intervals used 2,000 participant bootstrap resamples with seed 20260918.
 
@@ -370,6 +372,87 @@ Marian & Anhedonia & Unweighted & 145 & 7,071 & $-29.80$ ($-35.15$, $-23.84$) & 
 \end{tabular}%
 }
 \begin{flushleft}\footnotesize Negative MAE changes favour L8. Every CES analytic target met the 14-day rule; no below-14-day stratum existed. Marian IPW used participant-disjoint response probabilities, clipped to 0.10--0.99 and normalized within participant. IPW assumes missing at random conditional on observed history and cannot recover unreported states.\end{flushleft}
+\end{table*}
+
+\begin{table*}[!htbp]
+\caption{Stationary AR(1) null challenge for the four primary outcomes.}\label{tab:s16}
+\centering\small
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}lllrrrrr@{}}
+\toprule
+Dataset & Outcome & Statistic & Observed & Null mean & Null 95\% interval & Standardized distance & One-sided $p$\\
+\midrule
+Dejonckheere & Sadness & B8$-$L8 MAE & 1.174 & 0.322 & 0.040, 0.649 & 5.49 & 0.0002\\
+ & & Age gradient & 0.533 & 0.021 & $-0.121$, 0.170 & 6.98 & 0.0002\\
+Dejonckheere & Stress & B8$-$L8 MAE & 3.855 & 0.649 & 0.211, 1.119 & 13.78 & 0.0002\\
+ & & Age gradient & 1.568 & 0.042 & $-0.167$, 0.261 & 13.92 & 0.0002\\
+CES & PHQ-2 & B8$-$L8 MAE & 0.228 & 0.044 & 0.018, 0.073 & 13.26 & 0.0002\\
+ & & Age gradient & 0.113 & 0.008 & $-0.013$, 0.029 & 10.01 & 0.0002\\
+Marian & Depressed mood & B8$-$L8 MAE & 0.147 & 0.020 & 0.008, 0.033 & 20.60 & 0.0002\\
+ & & Age gradient & 0.059 & 0.002 & $-0.004$, 0.009 & 17.01 & 0.0002\\
+\bottomrule
+\end{tabular}%
+}
+\begin{flushleft}\footnotesize Null summaries are based on 5,000 participant-matched stationary Gaussian AR(1) simulations with observed sequence lengths and missing-position patterns. The minimum corrected one-sided Monte Carlo value is $1/5001=0.0002$. These post hoc tests falsify only the fitted stationary first-order explanation.\end{flushleft}
+\end{table*}
+
+\begin{table*}[!htbp]
+\caption{Expanded comparator and participant-SD-standardized performance in primary outcomes.}\label{tab:s17}
+\centering\small
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}llrrrrrrr@{}}
+\toprule
+Dataset & Outcome & B8 & L8 & EWM8 & Median8 & Mode8 & Online AR(1) & Oracle mean\\
+\midrule
+Dejonckheere & Sadness & 11.786 & 10.612 & 10.282 & 9.241 & -- & 10.560 & 10.586\\
+Dejonckheere & Stress & 21.094 & 17.239 & 16.853 & 16.568 & -- & 17.820 & 17.675\\
+CES & PHQ-2 & 0.975 & 0.747 & 0.724 & 0.690 & 0.706 & 0.763 & 0.768\\
+Marian & Depressed mood & 0.526 & 0.379 & 0.367 & 0.323 & 0.321 & 0.407 & 0.404\\
+\midrule
+Dejonckheere & Sadness, standardized & 0.732 & 0.659 & 0.639 & 0.561 & -- & 0.657 & 0.655\\
+Dejonckheere & Stress, standardized & 0.957 & 0.768 & 0.752 & 0.734 & -- & 0.798 & 0.785\\
+CES & PHQ-2, standardized & 0.932 & 0.731 & 0.713 & 0.645 & 0.660 & 0.752 & 0.750\\
+Marian & Depressed mood, standardized & 0.936 & 0.639 & 0.624 & 0.513 & 0.505 & 0.710 & 0.682\\
+\bottomrule
+\end{tabular}%
+}
+\begin{flushleft}\footnotesize Upper rows are participant-balanced MAE in outcome units. Standardized rows divide each participant's MAE by that participant's within-person standard deviation before averaging. Lower is better. Oracle mean uses future observations and is a diagnostic rather than a deployable predictor. Full eight-outcome estimates and bootstrap intervals are available in the archived CSV output.\end{flushleft}
+\end{table*}
+
+\begin{table*}[!htbp]
+\caption{EMA first-day and prompt-timing sensitivities.}\label{tab:s18}
+\centering\small
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}llrrr@{}}
+\toprule
+Dataset & Outcome & Original & Exclude day 1 and re-anchor & Prompt adjusted\\
+\midrule
+Dejonckheere & Sadness & $-9.97\%$ & $-10.14\%$ & $-9.96\%$\\
+Dejonckheere & Stress & $-18.27\%$ & $-18.10\%$ & $-17.94\%$\\
+Marian & Depressed mood & $-27.95\%$ & $-26.47\%$ & $-27.61\%$\\
+Marian & Anhedonia & $-29.80\%$ & $-25.63\%$ & $-29.25\%$\\
+\bottomrule
+\end{tabular}%
+}
+\begin{flushleft}\footnotesize Values are participant-balanced L8-versus-B8 MAE changes; negative values favour recent history. The original B8 covered a median of two calendar days in Dejonckheere and three in Marian. The exclusion analysis removed all first-day observations before re-establishing the first eight complete reports.\end{flushleft}
+\end{table*}
+
+\begin{table*}[!htbp]
+\caption{Early--late temporal generalizability after participant-SD standardization.}\label{tab:s19}
+\centering\small
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}llrrr@{}}
+\toprule
+Dataset & Outcome & Participants & Raw mean-benefit $r$ & Standardized mean-benefit $r$\\
+\midrule
+Dejonckheere & Sadness & 100 & 0.650 & 0.693\\
+Dejonckheere & Stress & 100 & 0.496 & 0.645\\
+CES & PHQ-2 & 94 & 0.748 & 0.657\\
+Marian & Depressed mood & 134 & 0.683 & 0.793\\
+\bottomrule
+\end{tabular}%
+}
+\begin{flushleft}\footnotesize Pearson correlations compare participant ranks in non-overlapping early and late blocks. Standardization divides update benefit by the participant's within-person standard deviation. These estimates describe temporal generalizability and are not formal reliability coefficients from a latent measurement model. Bootstrap intervals excluded zero for all displayed correlations.\end{flushleft}
 \end{table*}
 
 \end{document}
