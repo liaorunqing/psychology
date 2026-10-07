@@ -1,0 +1,12 @@
+{
+  "global_lag1": 0.9162573156008026,
+  "draws": 5000,
+  "mae_null_mean": 0.1749811526719665,
+  "mae_null_ci_low": 0.11855497162773465,
+  "mae_null_ci_high": 0.23570278868063116,
+  "mae_monte_carlo_p_one_sided": 0.0001999600079984003,
+  "gradient_null_mean": 0.07286048858144555,
+  "gradient_null_ci_low": 0.020578314693028378,
+  "gradient_null_ci_high": 0.12868801282110995,
+  "gradient_monte_carlo_p_one_sided": 0.0001999600079984003
+}

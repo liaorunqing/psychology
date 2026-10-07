@@ -1,0 +1,27 @@
+{
+  "status": "completed protocol-locked post hoc external extension",
+  "timestamp_utc": "2026-10-07T14:31:11.523115+00:00",
+  "classification": "direction_and_long_gap_supported",
+  "seed": 20260918,
+  "bootstrap_resamples": 2000,
+  "stationary_null_draws": 5000,
+  "input_hashes": {
+    "EMA.csv": "fbff34486ac2d4ff61d5e92b2caa7276cec51719973fe232df3096d3357f8d87",
+    "Codebook_Baseline_EMA.xlsx": "551b65fdb308edba9809b2b78fd30d99eed8ac9b6964bbc8594400e256ca96b1"
+  },
+  "protocol_sha256": "521ce7a25987b61462a79a091ff8b95cd7bf729e8f31bbd71bbe8b4ad13c9ef2",
+  "script_sha256": "6b077690e962bc0499ab863687685d2cd6bca67281d15b0ac0cd50b6f3799dee",
+  "software": {
+    "python": "3.12.3",
+    "numpy": "2.3.5",
+    "pandas": "2.3.3"
+  },
+  "checks": {
+    "scale_ranges": true,
+    "exact_duplicates_collapsed": true,
+    "current_and_future_excluded": true,
+    "equal_eight_report_budget": true,
+    "participant_balanced": true,
+    "participant_bootstrap": true
+  }
+}

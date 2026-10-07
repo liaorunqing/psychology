@@ -18,10 +18,13 @@ LABELS = {("Dejonckheere", "sad"): "Sadness", ("Dejonckheere", "stressed"): "Str
 
 
 def style():
-    mpl.rcParams.update({"font.family": "Arial", "font.size": 8, "axes.titlesize": 9,
+    mpl.rcParams.update({"font.family": "sans-serif",
+                         "font.sans-serif": ["Arial", "Helvetica", "DejaVu Sans", "sans-serif"],
+                         "font.size": 8, "axes.titlesize": 9,
                          "axes.labelsize": 8, "xtick.labelsize": 7, "ytick.labelsize": 7,
                          "axes.linewidth": .7, "pdf.fonttype": 42, "ps.fonttype": 42,
-                         "legend.frameon": False, "figure.dpi": 180})
+                         "svg.fonttype": "none", "legend.frameon": False,
+                         "figure.dpi": 180})
 
 
 def forest(ax, frame, y_col, label_col, title):
@@ -45,8 +48,8 @@ def main():
     windows = pd.read_csv(OUT / "major_revision_window_length.csv")
     origins = pd.read_csv(OUT / "major_revision_pseudo_origin.csv")
     ema = pd.read_csv(OUT / "peer_review_ema_sensitivity.csv")
-    fig, axes = plt.subplots(1, 3, figsize=(7.2, 3.75),
-                             gridspec_kw={"width_ratios": [1.0, 1.28, 1.0]})
+    fig, axes = plt.subplots(1, 3, figsize=(7.2, 4.05),
+                             gridspec_kw={"width_ratios": [.95, 1.18, 1.07]})
 
     ax = axes[0]
     for key, label in LABELS.items():
@@ -64,11 +67,17 @@ def main():
 
     primary = origins[[tuple(x) in LABELS for x in origins[["dataset", "outcome"]].itertuples(index=False, name=None)]].copy()
     primary["label"] = [LABELS[x] for x in primary[["dataset", "outcome"]].itertuples(index=False, name=None)]
-    primary["display"] = primary.label + " · " + primary.origin
+    primary["display"] = np.where(
+        primary.origin.eq("early"),
+        primary.label + ": early",
+        "   " + primary.origin,
+    )
     order = []
     for label in LABELS.values():
         order.extend([f"{label} · early", f"{label} · middle", f"{label} · late"])
-    primary["rank"] = primary.display.map({x: i for i, x in enumerate(order)})
+    primary["rank"] = (primary.label + " · " + primary.origin).map(
+        {x: i for i, x in enumerate(order)}
+    )
     primary = primary.sort_values("rank")
     forest(axes[1], primary, "display", "label", "b  Re-anchored origins")
 
@@ -80,18 +89,21 @@ def main():
         if key in [("Dejonckheere", "sad"), ("Dejonckheere", "stressed"),
                    ("Marian", "depressed")]:
             label = LABELS[key]
-            rows.append({"display": f"{label} · {scenario_labels[row.scenario]}", "label": label,
+            scenario = scenario_labels[row.scenario]
+            display = f"{label}: {scenario}" if scenario == "original" else f"   {scenario}"
+            rows.append({"display": display, "label": label,
                          "relative_mae_percent": row.relative_mae_L8_vs_B8_percent,
                          "ci_low": row.relative_ci_low, "ci_high": row.relative_ci_high})
     selection = pd.DataFrame(rows)
     forest(axes[2], selection, "display", "label", "c  EMA timing checks")
 
-    fig.subplots_adjust(left=.09, right=.99, bottom=.17, top=.92, wspace=.72)
+    fig.subplots_adjust(left=.09, right=.995, bottom=.16, top=.89, wspace=.62)
     fig.savefig(FIG / "Figure_5_major_revision_robustness.pdf", bbox_inches="tight")
+    fig.savefig(FIG / "Figure_5_major_revision_robustness.svg", bbox_inches="tight")
+    fig.savefig(FIG / "Figure_5_major_revision_robustness.tiff", bbox_inches="tight", dpi=600)
     fig.savefig(FIG / "Figure_5_major_revision_robustness.png", bbox_inches="tight", dpi=600)
     plt.close(fig)
 
 
 if __name__ == "__main__":
     main()
-

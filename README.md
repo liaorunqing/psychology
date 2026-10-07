@@ -1,8 +1,8 @@
-# Early versus recent personal histories in repeated psychological self-reports
+# Early versus recent personal baselines in repeated psychological self-reports
 
-Reproducibility materials for **“Early versus recent personal histories in repeated psychological self-reports: a cross-timescale secondary analysis.”**
+Reproducibility materials for **“Early versus recent personal baselines in repeated psychological self-reports: a cross-dataset prediction study.”**
 
-This repository contains versioned analysis scripts, participant-level validation tests, and dated protocols used to compare an early personal reference with recent and continuously updated histories across three intensive-longitudinal psychological datasets. Protocol timing and post hoc status are stated explicitly; the complete study was not preregistered.
+This repository contains versioned analysis scripts, validation tests, dated protocols, and non-identifying aggregate outputs used to compare an early personal reference with recent and continuously updated histories across three development datasets and a Corona Health external extension. Protocol timing and post hoc status are stated explicitly; the complete study was not preregistered.
 
 ## Scope
 
@@ -21,6 +21,8 @@ The release covers:
 - reviewer-requested comparator and bounded-score analyses;
 - window-length, CES recall-gap, Marian inverse-observation-weighting, and
   repeated pseudo-origin sensitivities; and
+- a protocol-locked Corona Health PHQ-9 external extension with a GAD-7 sensitivity;
+- empirical stationary-block and AR(1) marginal-model diagnostics; and
 - generation of the five main manuscript figures.
 
 The repository does **not** contain raw or participant-level derived data. Dataset access remains governed by the original repositories and licenses.
@@ -53,9 +55,14 @@ $DPT_DATA_ROOT/
 │   └── 0052_marian_ts.tsv
 └── Demographics/
     └── demographics.csv
+
+repository sibling directory/
+└── cgf63-kme28/
+    ├── EMA.csv
+    └── Codebook_Baseline_EMA.xlsx
 ```
 
-CES-derived analysis tables are expected under `analysis/outputs/exploration/` because redistribution is not authorized by this repository. See `DATA_ACCESS.md` for source identifiers and restrictions.
+CES-derived analysis tables are expected under `analysis/outputs/exploration/` because redistribution is not authorized by this repository. The Corona Health script resolves `cgf63-kme28` beside the repository by default. See `DATA_ACCESS.md` for source identifiers, hashes, and restrictions.
 
 ## Environment
 
@@ -86,10 +93,9 @@ Please cite the accompanying article and this repository. Machine-readable citat
 ## Archiving status
 
 The live code is available at <https://github.com/liaorunqing/psychology>.
-Release `v1.2.0` is the external-peer-review revision containing the stationary
-AR(1) null, expanded comparators, EMA timing checks, revised figures, and revised
-manuscript. A long-term archival DOI will be added after
-repository deposition; no DOI is claimed in this version.
+Version `v1.3.1` is the synchronized release candidate for the revised manuscript.
+The Zenodo concept DOI is <https://doi.org/10.5281/zenodo.23178871>; cite the
+version-specific DOI displayed on the archived `v1.3.1` record after deposition.
 
 ## License
 

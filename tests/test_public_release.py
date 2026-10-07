@@ -110,3 +110,20 @@ def test_stationary_ar1_revision_helpers_preserve_strict_history() -> None:
     changed[8:] = 1000
     assert np.isclose(prediction[0], np.mean(np.arange(8)))
     assert np.isclose(module.rolling_mean(changed)[0], prediction[0])
+
+
+def test_marian_probability_join_uses_recorded_target_occasion() -> None:
+    module = load("major_revision_sensitivity")
+    equal = pd.DataFrame({
+        "dataset": ["Marian"], "outcome": ["depressed"],
+        "participant": ["p1"], "target_occasion": [10],
+        "baseline_age": [1], "B8_mean": [1.5], "L8_mean": [1.75],
+    })
+    response = pd.DataFrame({
+        "outcome": ["depressed", "depressed"],
+        "participant": ["p1", "p1"], "counter": [9, 10],
+        "response_probability": [0.2, 0.8],
+    })
+    joined = module.join_marian_probabilities(equal, response)
+    assert joined.loc[0, "counter"] == 10
+    assert joined.loc[0, "response_probability"] == 0.8

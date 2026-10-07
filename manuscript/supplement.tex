@@ -1,4 +1,4 @@
-% Supplementary information, external-peer-review revision 2 October 2026.
+% Supplementary information, language and reviewer-audit revision 6 October 2026.
 \documentclass[pdflatex,sn-vancouver-num]{sn-jnl}
 \usepackage{booktabs}
 \usepackage{tabularx}
@@ -7,23 +7,27 @@
 \usepackage{url}
 \usepackage{graphicx}
 \usepackage{seqsplit}
+\usepackage{longtable}
+\usepackage{placeins}
 \raggedbottom
 \unnumbered
 
 \begin{document}
 \renewcommand{\thetable}{S\arabic{table}}
 
-\title{Supplementary information for: Early versus recent personal histories in repeated psychological self-reports}
+\title{Supplementary information for: Early versus recent personal baselines in repeated psychological self-reports: a cross-dataset prediction study}
 \author[1]{\fnm{Runqing} \sur{Liao}}\email{202411055222@stu.hstc.edu.cn}
 \author*[1]{\fnm{Zhining} \sur{Wang}}\email{mathwangzhining@163.com}
 \affil*[1]{\orgdiv{School of Mathematics and Statistics}, \orgname{Hanshan Normal University}, \orgaddress{\city{Chaozhou}, \postcode{521041}, \country{China}}}
 \maketitle
 
+This supplement is organized around the evidential sequence of the study. Supplementary Methods 1--7 document the three development datasets, the equal-information comparison, and the analyses that challenged alternative explanations. Supplementary Methods 8 documents the independently sourced Corona Health extension and its protocol lock. Tables S1--S2 describe sample flow and construct mapping; Tables S3--S20 report development-dataset diagnostics; and Tables S21--S24 report the external estimates, AR(1) model checks, and the distinction between conclusions supported by the diagnostics and mechanisms that remain unresolved.
+
 \section{Supplementary Methods 1: cohorts, chronology, and inclusion}
 
 All analyses used de-identified secondary data. Within each dataset--outcome pair, complete reports were ordered chronologically. The first eight complete reports formed the calibration block. A participant entered an equal-information prediction analysis only if at least one later complete target existed; participant-specific age-slope analyses additionally required at least five targets and variation in baseline age. No statistical outlier rule was used to remove observed outcome values. Scale-range validation occurred before analysis. Repeated reports were never treated as independent participants.
 
-The study used a staged evidential chronology. CES and Marian supported initial mechanism development. Outcomes, history budget, missingness checks, participant weighting, and the success criterion were then frozen before inspecting the Dejonckheere self-report outcome associations. Equal-weight extensions and all subsequent null, comparator, temporal-generalizability, machine-learning, semi-synthetic, window, observation-process, and pseudo-origin analyses are explicitly post hoc. The embargoed OSF registration (\url{https://osf.io/n2j3m/}) concerned a separate CES--PSYCHE-D activity and sleep question and is not claimed as preregistration for the present study.
+The study used a staged evidential chronology. CES and Marian supported initial mechanism development. The first association-blind Dejonckheere analysis compared a training-weighted early eight-report mean/last-value baseline with a cumulative online mean/last-value rule; a weighted recent-eight rule was added after those results were available. The equal-weight B8--L8 comparison reported here was defined subsequently, and all null, comparator, temporal-generalisability, machine-learning, semi-synthetic, window, observation-process, and pseudo-origin analyses in those three datasets are explicitly post hoc. On 5 October 2026, Corona Health structural fields, scale ranges, completeness, duplicate timestamps, and report counts were audited without calculating B8--L8 associations. A dated protocol then froze the primary PHQ-9 outcome, secondary GAD-7 outcome, eligibility, estimands, duplicate handling, long-gap sensitivity, ordinal checks, and stationary challenge before outcome comparison. This is a protocol-locked external extension, not preregistration. The embargoed OSF registration (\url{https://osf.io/n2j3m/}) concerned a separate CES--PSYCHE-D activity and sleep question and is not claimed as preregistration for the present study.
 
 \section{Supplementary Methods 2: equal-information estimands and null models}
 
@@ -36,11 +40,13 @@ Update benefit was $U_{it}=|y_{it}-B8_i|-|y_{it}-L8_{it}|$. Baseline age was ela
 
 Time permutation randomly reordered non-missing scores within participant while retaining assessment positions and target counts. The circular-shift challenge selected a non-zero cyclic shift within participant, preserving the score multiset, missing positions, and cyclic adjacent-pair structure while relocating the study start. B8, L8, target errors, and slopes were reconstructed for every one of 500 draws. One-sided Monte Carlo values were $(1+k)/501$. Four primary outcomes used a Bonferroni threshold of 0.0125.
 
-The principal post hoc null was a participant-matched stationary Gaussian AR(1) parametric bootstrap. For each participant and outcome, the mean, variance, and lag-1 coefficient were estimated from the complete observed sequence. Participant coefficients were shrunk towards the outcome-level estimate and clipped to $[-0.95,0.95]$. Five thousand stationary sequences retained observed series lengths and missing-position patterns. B8, L8, participant-balanced B8-minus-L8 MAE, and mean age gradients were reconstructed. One-sided Monte Carlo values were $(1+k)/5001$. The model permits the recent-history advantage expected under stationary persistence and is used as a falsification device, not as a substantive generative claim.
+The principal post hoc null was a participant-matched stationary Gaussian AR(1) parametric bootstrap. For each participant and outcome, the mean, residual innovation scale, and lag-1 coefficient were estimated from the complete observed sequence. Participant coefficients were shrunk towards the outcome-level estimate and clipped to $[-0.95,0.95]$. Each simulated development sequence began from the implied stationary Gaussian distribution, advanced in complete-report index, and was clipped to the admissible scale bounds. Clipping did not preserve the observed integer score grid or exact marginal moments. Five thousand sequences were generated. Observed report counts and age covariates were retained, but transitions did not depend on elapsed time and latent scores were not generated over missing opportunities before masking. B8, L8, participant-balanced B8-minus-L8 MAE, and mean age gradients were reconstructed. One-sided Monte Carlo values were $(1+k)/5001$. The model tests the fitted Gaussian first-order process, not all stationary psychological processes. A separately frozen post hoc diagnostic used 200 additional sequences per participant to compare observed and simulated marginal features (Table S23).
 
-\section{Supplementary Methods 3: temporal generalizability and machine learning}
+An additional post hoc circular geometric stationary bootstrap sampled each participant's empirical sequence with mean block lengths of 8, 16, and 32 reports (1,000 draws each). Initial source positions were uniform; at each subsequent position the source index restarted uniformly with probability $1/L$ and otherwise advanced circularly. Conditional on the observed sequence, this preserves the bounded empirical score grid and its marginal distribution in expectation while retaining different amounts of local dependence. Block lengths were diagnostic choices rather than calibrated psychological timescales, and the procedure has no universal finite-sample calibration guarantee.
 
-For temporal generalizability, each participant's post-calibration targets were divided chronologically into non-overlapping early and late blocks. Each block required at least five targets and age variation. Slopes and mean update benefits were estimated independently in the two blocks. Pearson and Spearman correlations were calculated across participants; Pearson intervals used 2,000 participant bootstrap samples.
+\section{Supplementary Methods 3: temporal generalisability and machine learning}
+
+For temporal generalisability, each participant's post-calibration targets were divided chronologically into non-overlapping early and late blocks. Each block required at least five targets and age variation. Slopes and mean update benefits were estimated independently in the two blocks. Pearson and Spearman correlations were calculated across participants; Pearson intervals used 2,000 participant bootstrap samples. Standardised analyses excluded zero-variance participants and recomputed raw mean-benefit and age-gradient correlations on that same eligibility set. Both blockwise mean benefits share B8; their correlation therefore describes repeatability of a shared-reference task statistic rather than an independent stable trait.
 
 The exploratory machine-learning target was late-block mean update benefit. Predictors were restricted to the first eight reports: mean, sample standard deviation, mean absolute successive difference, and linear trend. Ridge regression used five participant-disjoint outer folds and five-fold inner selection of $\alpha\in\{0.01,0.1,1,10,100\}$. Scaling and tuning were fitted only within training data. Each of 500 label permutations reran the complete nested procedure. The frozen gate required more than 10\% RMSE improvement, a participant-bootstrap interval below zero for relative RMSE change, positive out-of-fold correlation, and Bonferroni-adjusted one-sided $p\leq0.0125$.
 
@@ -54,52 +60,63 @@ For the secondary alarm comparison, each outcome--method threshold was the weigh
 
 \section{Supplementary Methods 5: uncertainty, integrity, and reproducibility}
 
-Participant-balanced metrics were calculated within participant before averaging. Unless otherwise stated, intervals used 2,000 bootstrap resamples of participants. These intervals quantify sampling variation among observed participants, conditional on the selected datasets and analysis decisions. They are not intervals over hypothetical datasets. All random procedures used seed 20260918. Automated tests verified strict temporal ordering, current/future exclusion, equal eight-value construction, disjoint participant folds, nested training-only preprocessing, null-model invariants, injection ordering, participant-level resampling, and output reconciliation.
+Participant-balanced MAE was the arithmetic mean of participant-specific MAEs. Participant-balanced RMSE was the square root of the arithmetic mean of participant-specific mean squared errors. Unless otherwise stated, intervals used 2,000 bootstrap resamples of participants. These intervals quantify sampling variation among observed participants, conditional on the selected datasets and analysis decisions. They are not intervals over hypothetical datasets. All random procedures used seed 20260918. Automated tests verified strict temporal ordering, current/future exclusion, equal eight-value construction, disjoint participant folds, nested training-only preprocessing, null-model invariants, injection ordering, participant-level resampling, and output reconciliation.
 
 \section{Supplementary Methods 6: post hoc comparator and bounded-score analyses}
 
-Additional predictors were computed from strictly prior reports. ``Last'' was the immediately preceding complete value. ``Cumulative'' was the mean of all complete values before the target. EWM8 was initialized at B8 and then updated as $m_t=(1-2/9)m_{t-1}+(2/9)y_{t-1}$. Median8 and, for bounded integer outcomes, Mode8 summarized the preceding eight reports. Online AR(1) re-estimated an intercept and lag coefficient from preceding reports at each target and clipped the coefficient to the stationary range. OracleMean used the complete participant series and is a diagnostic, non-deployable comparator. For PHQ-2 and Marian outcomes, B8 and L8 predictions were rounded and clipped to the admissible score set before computing exact accuracy, within-one accuracy, and absolute ordinal error. Participant-SD-standardized MAE divided each participant's MAE by that participant's observed within-person standard deviation before averaging. These additions are interpreted descriptively.
+Additional predictors were computed from strictly prior reports. ``Last'' was the immediately preceding complete value. ``Cumulative'' was the mean of all complete values before the target. EWM8 was initialized at B8 and then updated as $m_t=(1-2/9)m_{t-1}+(2/9)y_{t-1}$. Median8 summarized the preceding eight reports. For bounded integer outcomes, Mode8 selected the tied modal value that appeared most recently in the eight-report history. Online AR(1) re-estimated an intercept and lag coefficient from preceding reports at each target and clipped the coefficient to the stationary range. OracleMean used the complete participant series and is a retrospective diagnostic comparator. For PHQ-2 and Marian outcomes, B8 and L8 predictions were rounded and clipped to the admissible score set before computing exact accuracy, within-one accuracy, and absolute ordinal error. Participant-SD-standardised MAE divided each participant's MAE by that participant's observed within-person standard deviation before averaging. These additions are interpreted descriptively.
 
 \section{Supplementary Methods 7: origin, window, and observation sensitivities}
 
-These analyses were written into dated post hoc protocols before execution. Window-length analyses compared early and recent equal-weight means for $K=4,6,8,$ and 12 on common targets beginning at complete-report index 13. CES recall separation used the elapsed days between the target and immediately preceding complete PHQ-2 assessment. Marian response probabilities came from five participant-disjoint folds of an L2 logistic model using strictly prior completion rate, current missing streak, day, and beep; inverse probabilities were clipped to 0.10--0.99 and normalized within participant. EMA timing analyses either removed all day-1 observations and re-established the first eight complete reports or removed prompt-position means estimated without future target information. Pseudo-origin placement used the retrospectively observed complete-series length; consequently, repeated-origin results diagnose dependence on the original study start but do not represent prospective rolling-origin validation.
+These analyses were written into dated post hoc protocols before execution. Window-length analyses compared early and recent equal-weight means for $K=4,6,8,$ and 12 on common targets beginning at complete-report index 13. CES recall separation used elapsed days between the target and immediately preceding retained PHQ-2 assessment. Each Marian target retained its scheduled-opportunity counter. Response probabilities were joined by participant, outcome, and that counter and came from five folds with no participant overlap between training and test sets. An L2 logistic model used strictly prior cumulative mean and last score, prior complete-report count, prior completion rate, current missing streak, day, beep, and counter. Regularisation and standardisation were selected within training participants; estimated response probabilities were clipped to 0.10--0.99, reciprocal inverse-probability weights were calculated, and those weights were normalised within participant. EMA timing analyses either removed all day-1 observations and re-established the first eight complete reports or subtracted prompt-position means estimated from all complete reports. The latter is a retrospective descriptive adjustment, not a strictly past-only prediction procedure. Pseudo-origin placement used the retrospectively observed complete-series length; consequently, repeated-origin results diagnose dependence on the original study start but do not represent prospective rolling-origin validation.
 
 For repeated-origin analyses, a participant required at least 21 complete observations. Early, middle, and late origins were the first eligible index, the midpoint of the eligible starting-index range, and the final index retaining at least five evaluation targets. Eight reports formed the fixed baseline, the next eight reports were a washout, and evaluation began at the seventeenth report after each origin. B8 and L8 therefore shared no calibration values at the first evaluated target. Origins were not independent because they reused participants and sometimes observations. All contrasts and slope intervals used 2,000 participant bootstrap resamples with seed 20260918.
 
+\section{Supplementary Methods 8: protocol-locked Corona Health extension}
+
+Corona Health version 2 was obtained from B2SHARE (doi:10.23728/b2share.cgf63-kme28). The EMA file SHA-256 was \texttt{\seqsplit{FBFF34486AC2D4FF61D5E92B2CAA7276CEC51719973FE232DF3096D3357F8D87}}; the codebook SHA-256 was \texttt{\seqsplit{551B65FDB308EDBA9809B2B78FD30D99EED8AC9B6964BBC8594400E256CA96B1}}. The CSV contained unquoted comma-separated values in fields after the retained scale items. Parsing therefore addressed columns by their header positions and stopped after the GAD-7 items; every retained row was required to contain all addressed positions. Later free-text, device, and multiselect fields were not used.
+
+PHQ-9 was the frozen primary outcome and GAD-7 the frozen secondary outcome. Totals required every item, each within 0--3. The app instructed participants to report symptoms over the previous week. Records were ordered by timestamp. Forty-seven repeated participant--timestamp groups had identical PHQ-9 item values and were collapsed; no conflicting complete PHQ-9 duplicates were found. Prediction eligibility required nine complete reports. Slope eligibility required at least five targets and age variation. Baseline age was elapsed days from the eighth report.
+
+The primary participant-balanced MAE contrast, age gradient, and 2,000-resample participant bootstrap followed Supplementary Methods 2 and 5. In the long-gap sensitivity, a gap longer than 30 days started a new segment; B8 and L8 were reconstructed within each segment, and only segments with at least nine records contributed. Rounded predictions were clipped to 0--27 for PHQ-9 and 0--21 for GAD-7. Exact accuracy, within-two-point accuracy, and ordinal MAE were first averaged within participant and then across participants. Median8 was a frozen descriptive comparator.
+
+The PHQ-9 stationary challenge generated 5,000 participant-matched Gaussian AR(1) sequences in complete-report index. Participant lag-1 estimates were shrunk towards the pooled estimate and clipped to $[-0.95,0.95]$; observed sequence lengths, means, and SDs parameterised the generator but were not forced to match exactly in each simulated sequence. The Corona generator was not clipped to the PHQ-9 scale bounds, a choice exposed by the marginal model check in Table S23. Because the source schedule was irregular, this null does not represent a continuous-time process and does not reproduce elapsed gaps. The protocol, script, aggregate outputs, source data for Fig.~2 of the main manuscript, and run manifest are included in the analysis repository.
+
 \begin{table*}[!htbp]
 \caption{Cohort flow and analytic roles.}\label{tab:s1}
-\centering\small
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{@{}llrrrrrr@{}}
+\centering\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{tabularx}{\textwidth}{@{}l>{\raggedright\arraybackslash}Xrrrrrr@{}}
 \toprule
-Dataset & Outcome role and schedule & Source participants & Source rows & Complete records & Eligible participants & Post-calibration targets & Slope participants\\
+Dataset & Outcome role and schedule & \shortstack{Source\\IDs} & \shortstack{Source\\rows} & \shortstack{Complete\\records} & \shortstack{Eligible\\IDs} & \shortstack{Post-calibration\\targets} & \shortstack{Slope\\IDs}\\
 \midrule
 Dejonckheere & Five 0--100 momentary items; 14 days & 100 & 9,800 & 8,702 & 100 & 7,902 per outcome & 100\\
-CES & PHQ-2 (0--6); up to four years & 110 & 5,407 & 5,407 & 105 & 4,541 & 99\\
-Marian & Two 1--4 momentary items; 21 days & 145 & 9,135 & 8,231 & 145 & 7,071 per outcome & 145\\
+CES & PHQ-2 (0--6); up to four years & 110 & 5,894 & 5,407 & 105 & 4,541 & 99\\
+Marian & Two 1--4 four-hour items; 21 days & 145 & 9,135 & 8,231 & 145 & 7,071 per outcome & 145\\
+Corona Health & PHQ-9 (0--27); irregular, one-week recall & 1,487 & 11,541 & 11,432 & 324 & 5,618 & 232\\
+Corona Health & GAD-7 (0--21); irregular, one-week recall & 1,488 & 11,541 & 11,494 & 327 & 5,663 & 232\\
 \bottomrule
-\end{tabular}%
-}
-\begin{flushleft}\footnotesize Eligibility required at least nine complete reports (eight calibration reports plus one target). Slope analyses additionally required at least five targets and age variation. CES source rows refer to the constructed complete PHQ-2 panel and are not a scheduled-opportunity denominator. Stress-test eligibility was scenario-specific and is reported in Table S6.\end{flushleft}
+\end{tabularx}
+\begin{flushleft}\footnotesize Eligibility required at least nine retained reports (eight calibration reports plus one target). Slope analyses additionally required at least five targets and age variation. Corona Health source participants count identifiers with a complete retained scale; complete records are after collapse of identical participant--timestamp duplicates. The supplied CES development-derived table contained 5,894 visits; panel construction retained 5,407. This is not a scheduled-opportunity denominator, and preprocessing upstream of the supplied derived table was unavailable for audit. Stress-test eligibility was scenario-specific and is reported in Table S6.\end{flushleft}
 \end{table*}
 
 \begin{table*}[!htbp]
 \caption{Variable and construct mapping.}\label{tab:s2}
-\centering\small
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{@{}llll@{}}
+\centering\footnotesize
+\begin{tabularx}{\textwidth}{@{}ll>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
 \toprule
 Dataset & Variable & Scale / reference period & Interpretation boundary\\
 \midrule
 Dejonckheere & sad, stressed, happy, relaxed, angry & 0--100; momentary & Single affect/stress items; not diagnoses\\
 CES & PHQ-2 & 0--6; previous two weeks & Depression symptom screener; not a diagnostic outcome\\
-Marian & depressed, anhedonia & 1--4; momentary adaptation & Depression-related states; not interchangeable with standard PHQ-2\\
+Marian & depressed, anhedonia & 1--4; preceding four hours & Depression-related states; not interchangeable with standard PHQ-2 or ``right now'' ratings\\
+Corona Health & PHQ-9 item sum & 0--27; previous week & Adapted recall period; symptom score, not diagnosis\\
+Corona Health & GAD-7 item sum & 0--21; previous week & Secondary construct-generalisation outcome; not diagnosis\\
 All & B8 & Mean of first 8 complete reports & Frozen personal reference\\
 All & L8 & Mean of 8 most recent strictly prior complete reports & Time-local personal reference\\
 All & A50 & $0.5B8+0.5L8$ & Post-hoc anchored stress-test comparator\\
 \bottomrule
-\end{tabular}%
-}
+\end{tabularx}
 \end{table*}
 
 \begin{table*}[!htbp]
@@ -125,7 +142,7 @@ Marian & Anhedonia & 0.052 & 0.008 & $-0.007$, 0.023 & 0.001996\\
 \end{table*}
 
 \begin{table*}[!htbp]
-\caption{Early--late temporal generalizability in primary outcomes.}\label{tab:s4}
+\caption{Early--late temporal generalisability in primary outcomes.}\label{tab:s4}
 \centering\small
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{@{}llrrcc@{}}
@@ -186,7 +203,7 @@ Marian & Depressed mood & B8 & 141 & 1.000 & 0.00 & 5.14 (3.50, 7.05)\\
 \bottomrule
 \end{tabular}%
 }
-\begin{flushleft}\footnotesize Primary scenario: one pooled within-person outcome SD, midpoint onset, eight-report ramp, and eight-report plateau. Signal-retention values are deterministic under the fixed schedule. Excess alarm is injected detection rate minus matched-original false-alarm rate; intervals use participant bootstrap resampling. Thresholds are methodological, not clinical.\end{flushleft}
+\begin{flushleft}\footnotesize Primary scenario: one pooled within-person outcome SD, midpoint onset, eight-report ramp, and eight-report plateau. Scenario participant counts refer to records eligible for the specified injection schedule, whereas original MAE gains were calculated in the full prediction sample; these columns therefore have different denominators. Signal-retention values are deterministic under the imposed trajectory and fixed baseline weights. Excess alarm is injected detection rate minus matched-original false-alarm rate; intervals use participant bootstrap resampling. Thresholds are methodological, not clinical, and no observed deterioration labels were available.\end{flushleft}
 \end{table*}
 
 \begin{table*}[!htbp]
@@ -216,13 +233,13 @@ Random seed & 20260918\\
 Equal-weight input SHA-256 & \texttt{\seqsplit{21d0a8c0abf78492d7f87bc2e26208403e07b88a1ec27bac868148366a8717d9}}\\
 Equal-weight protocol SHA-256 & \texttt{\seqsplit{d1249668b8aeb20af76a971cb1425f853d5043fa28a609720d1d2e10d1b448db}}\\
 Circular-shift protocol SHA-256 & \texttt{\seqsplit{7f13ca7ca451cb9abbee8c732dbb53cfbda02f4847bbd2a38b18bfd2148a2fca}}\\
-Temporal-generalizability protocol SHA-256 & \texttt{\seqsplit{ed386a1f42d4e61502c6d9a4e77a00dc8a8f35e1e945298c265eab04da89ec9b}}\\
+Temporal-generalisability protocol SHA-256 & \texttt{\seqsplit{ed386a1f42d4e61502c6d9a4e77a00dc8a8f35e1e945298c265eab04da89ec9b}}\\
 Machine-learning protocol SHA-256 & \texttt{\seqsplit{c0756f4d019f07b441de7b4f4d7030f92ce355986796cdef9e296c4e87b99403}}\\
 Stress-test protocol SHA-256 & \texttt{\seqsplit{2c682db3a1cdc5570d23a4b5691bc9bab6755ff6c1d55834d50d731aab7ae1ae}}\\
 Stress-test script SHA-256 & \texttt{\seqsplit{7b145585f4056a47284054e1655beac2f25d968b8d7b341f131fde619905281a}}\\
 \bottomrule
 \end{tabularx}
-\begin{flushleft}\footnotesize Hashes identify the frozen analysis artifacts used for this draft. The public code and protocol repository is available at \url{https://github.com/liaorunqing/psychology}; the frozen snapshot corresponding to this manuscript is release v1.1.0 (\url{https://github.com/liaorunqing/psychology/releases/tag/v1.1.0}). A long-term archival DOI is pending and is not claimed in this version.\end{flushleft}
+\begin{flushleft}\footnotesize Hashes identify the frozen analysis artifacts used for this draft. The synchronized code and protocol package is prepared as GitHub release v1.3.1 at \url{https://github.com/liaorunqing/psychology}. The permanent Zenodo archive has concept DOI \url{https://doi.org/10.5281/zenodo.23178871}; its v1.3.1 version DOI will be inserted before submission.\end{flushleft}
 \end{table*}
 
 \begin{table*}[!htbp]
@@ -244,7 +261,7 @@ Marian & Anhedonia & 0.567/0.795 & 0.360/0.741 & 0.460/0.667 & 0.398/0.641 & 0.3
 \bottomrule
 \end{tabular}%
 }
-\begin{flushleft}\footnotesize Each cell is MAE/RMSE. Metrics were computed within participant and then averaged across participants. Main Table 1 provides B8 and L8 MAE intervals; comparator contrasts and participant-bootstrap intervals are in main Table 2 and the archived source table. No cross-scale pooling was performed.\end{flushleft}
+\begin{flushleft}\footnotesize Each cell is MAE/RMSE. MAE is the arithmetic mean of participant-specific MAEs; RMSE is the square root of the arithmetic mean of participant-specific mean squared errors. Main Table 1 provides B8 and L8 MAE intervals. Main Table 2 reports comparator point estimates; participant-bootstrap intervals for comparator contrasts are available in the archived source table and are not reproduced in that main-text table. No cross-scale pooling was performed.\end{flushleft}
 \end{table*}
 
 \begin{table*}[!htbp]
@@ -306,7 +323,7 @@ Race & White & 65 & 61.9\\
  & Missing & 1 & 1.0\\
 \bottomrule
 \end{tabular}
-\begin{flushleft}\footnotesize Percentages use the 105-participant CES analytic sample. Equivalent harmonized demographic fields were not available in the two openESM analysis files; population descriptions therefore follow their source reports. Categories reproduce the public CES coding and should not be interpreted as investigator-assigned identities.\end{flushleft}
+\begin{flushleft}\footnotesize Percentages use the 105-participant CES analytic sample. Equivalent harmonised demographic fields were not available in the two openESM analysis files; population descriptions therefore follow their source reports. Categories reproduce the public CES coding and should not be interpreted as investigator-assigned identities.\end{flushleft}
 \end{table*}
 
 \begin{table*}[!htbp]
@@ -365,39 +382,39 @@ Dataset & Outcome & Analysis & Participants & Targets & MAE change, \% (95\% CI)
 \midrule
 CES & PHQ-2 & Previous-assessment gap $\geq14$ days & 105 & 4,541 & $-23.38$ ($-30.42$, $-16.62$) & 0.105 (0.062, 0.157)\\
 Marian & Depressed mood & Unweighted & 145 & 7,071 & $-27.95$ ($-33.18$, $-22.14$) & 0.059 (0.042, 0.079)\\
- & & IPW & 145 & 7,071 & $-28.32$ ($-33.81$, $-22.57$) & 0.060 (0.041, 0.079)\\
+ & & IPW & 145 & 7,071 & $-28.58$ ($-34.23$, $-22.72$) & 0.060 (0.042, 0.080)\\
 Marian & Anhedonia & Unweighted & 145 & 7,071 & $-29.80$ ($-35.15$, $-23.84$) & 0.052 (0.034, 0.073)\\
- & & IPW & 145 & 7,071 & $-30.07$ ($-35.34$, $-24.38$) & 0.054 (0.035, 0.075)\\
+ & & IPW & 145 & 7,071 & $-30.00$ ($-35.41$, $-24.33$) & 0.054 (0.035, 0.074)\\
 \bottomrule
 \end{tabular}%
 }
-\begin{flushleft}\footnotesize Negative MAE changes favour L8. Every CES analytic target met the 14-day rule; no below-14-day stratum existed. Marian IPW used participant-disjoint response probabilities, clipped to 0.10--0.99 and normalized within participant. IPW assumes missing at random conditional on observed history and cannot recover unreported states.\end{flushleft}
+\begin{flushleft}\footnotesize Negative MAE changes favour L8. Every CES analytic target met the 14-day minimum relative to the preceding retained report; the 14--30-day rule for visits adjacent in the source data did not prevent longer retained gaps after intermediate exclusions. Marian response probabilities were joined with the true scheduled-opportunity counter and estimated in folds with no participant overlap. Probabilities were clipped to 0.10--0.99; reciprocal inverse-probability weights were then formed and normalised within participant. Bootstrap intervals condition on the fitted response model. The age-gradient values in Tables S14--S15 use the scaling defined for each sensitivity and should not be compared numerically with main-text gradients unless the estimand and scaling coincide. IPW assumes missing at random conditional on observed history and cannot recover unreported states.\end{flushleft}
 \end{table*}
 
 \begin{table*}[!htbp]
-\caption{Stationary AR(1) null challenge for the four primary outcomes.}\label{tab:s16}
+\caption{Fitted Gaussian AR(1) null challenge for the four primary outcomes.}\label{tab:s16}
 \centering\small
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{@{}lllrrrrr@{}}
 \toprule
-Dataset & Outcome & Statistic & Observed & Null mean & Null 95\% interval & Standardized distance & One-sided $p$\\
+Dataset & Outcome & Statistic & Observed & Null mean & Null 95\% interval & Standardised distance & One-sided $p$\\
 \midrule
 Dejonckheere & Sadness & B8$-$L8 MAE & 1.174 & 0.322 & 0.040, 0.649 & 5.49 & 0.0002\\
  & & Age gradient & 0.533 & 0.021 & $-0.121$, 0.170 & 6.98 & 0.0002\\
 Dejonckheere & Stress & B8$-$L8 MAE & 3.855 & 0.649 & 0.211, 1.119 & 13.78 & 0.0002\\
  & & Age gradient & 1.568 & 0.042 & $-0.167$, 0.261 & 13.92 & 0.0002\\
 CES & PHQ-2 & B8$-$L8 MAE & 0.228 & 0.044 & 0.018, 0.073 & 13.26 & 0.0002\\
- & & Age gradient & 0.113 & 0.008 & $-0.013$, 0.029 & 10.01 & 0.0002\\
+ & & Age gradient & 0.110 & 0.006 & $-0.011$, 0.024 & 11.88 & 0.0002\\
 Marian & Depressed mood & B8$-$L8 MAE & 0.147 & 0.020 & 0.008, 0.033 & 20.60 & 0.0002\\
  & & Age gradient & 0.059 & 0.002 & $-0.004$, 0.009 & 17.01 & 0.0002\\
 \bottomrule
 \end{tabular}%
 }
-\begin{flushleft}\footnotesize Null summaries are based on 5,000 participant-matched stationary Gaussian AR(1) simulations with observed sequence lengths and missing-position patterns. The minimum corrected one-sided Monte Carlo value is $1/5001=0.0002$. These post hoc tests falsify only the fitted stationary first-order explanation.\end{flushleft}
+\begin{flushleft}\footnotesize Null summaries are based on 5,000 participant-matched stationary Gaussian AR(1) simulations in complete-report index. Observed report counts and age covariates were retained; latent scores were not generated over missed opportunities and transitions did not depend on elapsed time. The CES age-gradient row uses its prespecified minimum-five-target eligibility set (99 participants, 4,523 targets). The minimum corrected one-sided Monte Carlo value is $1/5001=0.0002$. These post hoc tests address only the fitted Gaussian first-order process.\end{flushleft}
 \end{table*}
 
 \begin{table*}[!htbp]
-\caption{Expanded comparator and participant-SD-standardized performance in primary outcomes.}\label{tab:s17}
+\caption{Expanded comparator and participant-SD-standardised performance in primary outcomes.}\label{tab:s17}
 \centering\small
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{@{}llrrrrrrr@{}}
@@ -409,14 +426,14 @@ Dejonckheere & Stress & 21.094 & 17.239 & 16.853 & 16.568 & -- & 17.820 & 17.675
 CES & PHQ-2 & 0.975 & 0.747 & 0.724 & 0.690 & 0.706 & 0.763 & 0.768\\
 Marian & Depressed mood & 0.526 & 0.379 & 0.367 & 0.323 & 0.321 & 0.407 & 0.404\\
 \midrule
-Dejonckheere & Sadness, standardized & 0.732 & 0.659 & 0.639 & 0.561 & -- & 0.657 & 0.655\\
-Dejonckheere & Stress, standardized & 0.957 & 0.768 & 0.752 & 0.734 & -- & 0.798 & 0.785\\
-CES & PHQ-2, standardized & 0.932 & 0.731 & 0.713 & 0.645 & 0.660 & 0.752 & 0.750\\
-Marian & Depressed mood, standardized & 0.936 & 0.639 & 0.624 & 0.513 & 0.505 & 0.710 & 0.682\\
+Dejonckheere & Sadness, standardised & 0.732 & 0.659 & 0.639 & 0.561 & -- & 0.657 & 0.655\\
+Dejonckheere & Stress, standardised & 0.957 & 0.768 & 0.752 & 0.734 & -- & 0.798 & 0.785\\
+CES & PHQ-2, standardised & 0.932 & 0.731 & 0.713 & 0.645 & 0.660 & 0.752 & 0.750\\
+Marian & Depressed mood, standardised & 0.936 & 0.639 & 0.624 & 0.513 & 0.505 & 0.710 & 0.682\\
 \bottomrule
 \end{tabular}%
 }
-\begin{flushleft}\footnotesize Upper rows are participant-balanced MAE in outcome units. Standardized rows divide each participant's MAE by that participant's within-person standard deviation before averaging. Lower is better. Oracle mean uses future observations and is a diagnostic rather than a deployable predictor. Full eight-outcome estimates and bootstrap intervals are available in the archived CSV output.\end{flushleft}
+\begin{flushleft}\footnotesize Upper rows are participant-balanced MAE in outcome units. Standardised rows divide each participant's MAE by that participant's within-person standard deviation before averaging. Lower is better. Oracle mean uses future observations and is a diagnostic rather than a deployable predictor. Full eight-outcome estimates and bootstrap intervals are available in the archived CSV output.\end{flushleft}
 \end{table*}
 
 \begin{table*}[!htbp]
@@ -434,16 +451,16 @@ Marian & Anhedonia & $-29.80\%$ & $-25.63\%$ & $-29.25\%$\\
 \bottomrule
 \end{tabular}%
 }
-\begin{flushleft}\footnotesize Values are participant-balanced L8-versus-B8 MAE changes; negative values favour recent history. The original B8 covered a median of two calendar days in Dejonckheere and three in Marian. The exclusion analysis removed all first-day observations before re-establishing the first eight complete reports.\end{flushleft}
+\begin{flushleft}\footnotesize Values are participant-balanced L8-versus-B8 MAE changes; negative values favour recent history. The original B8 covered a median of two calendar days in Dejonckheere and three in Marian. The exclusion analysis removed all first-day observations before re-establishing the first eight complete reports. Prompt offsets were estimated from all complete reports and are therefore retrospective descriptive adjustments, not strictly past-only forecasts.\end{flushleft}
 \end{table*}
 
 \begin{table*}[!htbp]
-\caption{Early--late temporal generalizability after participant-SD standardization.}\label{tab:s19}
+\caption{Early--late temporal generalisability after participant-SD standardisation.}\label{tab:s19}
 \centering\small
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{@{}llrrr@{}}
 \toprule
-Dataset & Outcome & Participants & Raw mean-benefit $r$ & Standardized mean-benefit $r$\\
+Dataset & Outcome & Participants & Raw mean-benefit $r$ & Standardised mean-benefit $r$\\
 \midrule
 Dejonckheere & Sadness & 100 & 0.650 & 0.693\\
 Dejonckheere & Stress & 100 & 0.496 & 0.645\\
@@ -452,7 +469,144 @@ Marian & Depressed mood & 134 & 0.683 & 0.793\\
 \bottomrule
 \end{tabular}%
 }
-\begin{flushleft}\footnotesize Pearson correlations compare participant ranks in non-overlapping early and late blocks. Standardization divides update benefit by the participant's within-person standard deviation. These estimates describe temporal generalizability and are not formal reliability coefficients from a latent measurement model. Bootstrap intervals excluded zero for all displayed correlations.\end{flushleft}
+\begin{flushleft}\footnotesize Pearson correlations compare participant ranks in non-overlapping early and late blocks on a common nonzero-variance eligibility set. Standardisation divides update benefit by the participant's within-person standard deviation. Both blocks share B8; the estimates therefore describe repeatability of a shared-reference task statistic, not a formal reliability coefficient or an identified stable psychological trait. Bootstrap intervals excluded zero for all displayed correlations.\end{flushleft}
 \end{table*}
+
+\begin{table*}[!htbp]
+\caption{Empirical stationary-block model-sensitivity analysis for primary outcomes.}\label{tab:s20}
+\centering\small
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}lllcccc@{}}
+\toprule
+Dataset & Outcome & Statistic & Observed & Block 8: null mean ($p$) & Block 16: null mean ($p$) & Block 32: null mean ($p$)\\
+\midrule
+Dejonckheere & Sadness & B8$-$L8 MAE & 1.174 & 0.523 (0.032) & 0.628 (0.064) & 0.760 (0.131)\\
+ & & Age gradient & 0.533 & 0.036 (0.001) & 0.041 (0.001) & 0.067 (0.001)\\
+Dejonckheere & Stress & B8$-$L8 MAE & 3.855 & 1.117 (0.001) & 1.370 (0.001) & 1.614 (0.001)\\
+ & & Age gradient & 1.568 & 0.087 (0.001) & 0.097 (0.001) & 0.109 (0.001)\\
+CES & PHQ-2 & B8$-$L8 MAE & 0.228 & 0.064 (0.001) & 0.083 (0.001) & 0.099 (0.001)\\
+ & & Age gradient & 0.110 & 0.008 (0.001) & 0.011 (0.001) & 0.014 (0.001)\\
+Marian & Depressed mood & B8$-$L8 MAE & 0.147 & 0.029 (0.001) & 0.036 (0.001) & 0.042 (0.001)\\
+ & & Age gradient & 0.059 & 0.002 (0.001) & 0.002 (0.001) & 0.003 (0.001)\\
+\bottomrule
+\end{tabular}%
+}
+\begin{flushleft}\footnotesize Values come from 1,000 circular geometric stationary-bootstrap draws at each mean block length. One-sided Monte Carlo values use $(1+k)/1001$; 0.001 is the minimum attainable value after correction. The procedure is conditional on each observed empirical sequence and preserves bounded score support, but block lengths were diagnostic choices and are not calibrated psychological timescales. It is a post hoc model-sensitivity analysis, not a universal test of stationarity.\end{flushleft}
+\end{table*}
+
+\begin{table*}[!htbp]
+\caption{Protocol-locked Corona Health external-extension estimates.}\label{tab:s21}
+\centering\footnotesize
+{\itshape Panel A: absolute prediction error}\par\smallskip
+\begin{tabular}{@{}llrrrr@{}}
+\toprule
+Outcome & Role & IDs & Targets & B8 MAE & L8 MAE\\
+\midrule
+PHQ-9 & Primary & 324 & 5,618 & 2.196 & 1.831\\
+GAD-7 & Secondary & 327 & 5,663 & 1.946 & 1.619\\
+\bottomrule
+\end{tabular}
+\par\medskip
+{\itshape Panel B: paired contrasts}\par\smallskip
+\begin{tabular}{@{}lcc@{}}
+\toprule
+Outcome & Difference (95\% CI) & Change, \% (95\% CI)\\
+\midrule
+PHQ-9 & 0.365 (0.276, 0.462) & $-16.60$ ($-20.11$, $-13.18$)\\
+GAD-7 & 0.327 (0.255, 0.410) & $-16.82$ ($-20.35$, $-13.54$)\\
+\bottomrule
+\end{tabular}
+\par\medskip
+{\itshape Panel C: baseline-age gradients and participant-level direction}\par\smallskip
+\begin{tabular}{@{}lcc@{}}
+\toprule
+Outcome & Mean age gradient (95\% CI) & L8 better, IDs\\
+\midrule
+PHQ-9 & 0.291 (0.168, 0.411)$^{a}$ & 58.0\%\\
+GAD-7 & 0.226 (0.141, 0.316)$^{b}$ & 60.9\%\\
+\bottomrule
+\end{tabular}
+\begin{flushleft}\footnotesize Participant-balanced estimates with 2,000 identifier-bootstrap resamples. Positive differences and gradients favour recent history. $^{a}$The PHQ-9 gradient sample contained 232 identifiers and 5,426 targets. $^{b}$The GAD-7 gradient sample contained 232 identifiers and 5,462 targets. The source documentation notes that an anonymised user identifier may change after app reinstallation or a phone change; identifier counts therefore need not equal distinct natural persons. PHQ-9 was frozen as primary; GAD-7 could not replace it based on results.\end{flushleft}
+\end{table*}
+
+\begin{table*}[!htbp]
+\caption{Corona Health long-gap, ordinal-score, and stationary-process checks.}\label{tab:s22}
+\centering\small
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}lllrrrr@{}}
+\toprule
+Analysis & Outcome & Method/statistic & Participants & Targets/draws & Estimate & 95\% interval or $p_{\mathrm{MC}}$\\
+\midrule
+Split at gaps $>30$ days & PHQ-9 & B8$-$L8 MAE & 274 & 4,978 & 0.404 & 0.303, 0.518\\
+ & GAD-7 & B8$-$L8 MAE & 276 & 5,019 & 0.351 & 0.270, 0.439\\
+Rounded exact accuracy & PHQ-9 & B8 / L8 / Median8 & 324 & 5,618 & 21.0\% / 25.4\% / 29.2\% & Descriptive\\
+Rounded within-two accuracy & PHQ-9 & B8 / L8 / Median8 & 324 & 5,618 & 69.6\% / 75.7\% / 76.2\% & Descriptive\\
+Rounded exact accuracy & GAD-7 & B8 / L8 / Median8 & 327 & 5,663 & 20.7\% / 25.9\% / 28.1\% & Descriptive\\
+Rounded within-two accuracy & GAD-7 & B8 / L8 / Median8 & 327 & 5,663 & 73.5\% / 80.0\% / 79.7\% & Descriptive\\
+Gaussian AR(1) null & PHQ-9 & B8$-$L8 MAE & 324 & 5,000 draws & Observed 0.365; null mean 0.175 & Null 0.119, 0.236; $p=0.0002$\\
+Gaussian AR(1) null & PHQ-9 & Mean age gradient & 232 & 5,000 draws & Observed 0.291; null mean 0.073 & Null 0.021, 0.129; $p=0.0002$\\
+\bottomrule
+\end{tabular}%
+}
+\begin{flushleft}\footnotesize Long-gap sequences were reconstructed after segmentation, so no predictor was calculated across a gap longer than 30 days. Ordinal accuracies were averaged within participant before the group mean. AR(1) intervals are central simulation intervals and Monte Carlo values use $(1+k)/5001$; they are not participant-bootstrap confidence intervals.\end{flushleft}
+\end{table*}
+
+\begin{table*}[!htbp]
+\caption{Participant-balanced marginal checks for the fitted Gaussian AR(1) reference generators.}\label{tab:s23}
+\centering\footnotesize
+{\itshape Panel A: location and dispersion}\par\smallskip
+\begin{tabular}{@{}llcc@{}}
+\toprule
+Dataset & Outcome & \shortstack{Mean\\observed / simulated} & \shortstack{Within-person SD\\observed / simulated}\\
+\midrule
+Dejonckheere & Sadness & 11.63 / 13.87 & 15.13 / 11.87\\
+Dejonckheere & Stress & 26.10 / 27.89 & 21.94 / 18.76\\
+CES & PHQ-2 & 1.14 / 1.23 & 0.97 / 0.79\\
+Marian & Depressed mood & 1.43 / 1.51 & 0.54 / 0.41\\
+Corona Health & PHQ-9 & 7.00 / 7.00 & 2.10 / 1.84\\
+\bottomrule
+\end{tabular}
+\par\medskip
+{\itshape Panel B: scale boundaries and serial dependence}\par\smallskip
+\begin{tabular}{@{}llccc@{}}
+\toprule
+Dataset & Outcome & \shortstack{Floor fraction\\observed / simulated} & \shortstack{Lag-1\\observed / simulated} & \shortstack{Simulated fraction\\outside scale}\\
+\midrule
+Dejonckheere & Sadness & 0.443 / 0.256 & 0.179 / 0.150 & 0.000\\
+Dejonckheere & Stress & 0.248 / 0.152 & 0.226 / 0.198 & 0.000\\
+CES & PHQ-2 & 0.489 / 0.203 & 0.261 / 0.232 & 0.000\\
+Marian & Depressed mood & 0.703 / 0.289 & 0.246 / 0.208 & 0.000\\
+Corona Health & PHQ-9 & 0.114 / 0.000 & 0.244 / 0.356 & 0.063\\
+\bottomrule
+\end{tabular}
+\begin{flushleft}\footnotesize Values average sequence-level features equally across participants or anonymised user identifiers. Simulated values additionally average 200 diagnostic draws per unit (seed 20260918), separate from the 5,000 draws used for the null contrasts. Development generators clipped continuous Gaussian draws to scale bounds; the Corona PHQ-9 generator did not clip, and 6.3\% of simulated values lay outside 0--27. Neither generator preserved the observed integer score grid. These post hoc checks assess model approximation and are not additional hypothesis tests.\end{flushleft}
+\end{table*}
+
+\FloatBarrier
+\begingroup
+\footnotesize
+\setlength{\LTleft}{0pt}
+\setlength{\LTright}{0pt}
+\begin{longtable}{@{}p{1.8cm}p{3.0cm}p{3.4cm}p{3.4cm}@{}}
+\caption{Competing explanations, diagnostic evidence, and remaining uncertainty.}\label{tab:s24}\\
+\toprule
+Explanation & Diagnostic analysis & What the evidence shows & What remains unresolved\\
+\midrule
+\endfirsthead
+\toprule
+Explanation & Diagnostic analysis & What the evidence shows & What remains unresolved\\
+\midrule
+\endhead
+Ordinary temporal persistence & Participant-matched Gaussian AR(1) simulations; empirical stationary-block bootstrap in development datasets & Persistence produces a nonzero recent-history advantage, but fitted-null magnitudes were smaller for the primary outcomes, including external PHQ-9 & Gaussian AR(1) is not a universal stationary model; irregular continuous-time dependence was not identified\\
+Unusual study entry & First-day exclusion and later pseudo-origins & Updating often remained useful after re-anchoring, while continuous age gradients weakened & Pseudo-origins were retrospectively selected and reused observations\\
+Window or estimator choice & Equal $K=4,6,8,12$ histories; EWM8, median, mode, last value, online AR(1) & The direction was not specific to eight-report arithmetic means; robust summaries helped on bounded scales & No rule was prospectively optimized for clinical decisions\\
+Observation process & Opportunity-based inverse-probability weighting in scheduled EMA datasets & Modelled response propensity produced similar estimates & Missing-not-at-random states cannot be recovered from observed history\\
+Long irregular gaps & Corona Health segmentation at gaps longer than 30 days & Reconstructing histories within shorter segments preserved the PHQ-9 and GAD-7 directions & A 30-day threshold is a sensitivity choice, not an identified psychological timescale\\
+Ordinal and floor effects & Rounded/clipped predictions; recent median or mode & Accuracy and ordinal MAE supported the same direction & Arithmetic score differences do not constitute a full item-response model\\
+Stable individual decay trait & Non-overlapping early--late estimates of person-specific gradients & Group-average advantages were clear, but individual gradient ranks did not generalise & Short blocks make individual slopes noisy; absence of evidence is not evidence of no heterogeneity\\
+\bottomrule
+\end{longtable}
+\begin{flushleft}\footnotesize This table separates conclusions supported by the diagnostics from mechanisms that remain unidentified. No row should be read as a causal adjudication.\end{flushleft}
+\endgroup
 
 \end{document}

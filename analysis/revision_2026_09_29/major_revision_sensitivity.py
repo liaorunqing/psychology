@@ -189,20 +189,30 @@ def pseudo_origin_rows(series, origin_label: str) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
-def marian_ipw() -> pd.DataFrame:
-    equal = pd.read_parquet(EQUAL)
-    equal = equal.loc[equal.dataset.eq("Marian")].copy()
-    equal["counter"] = equal.baseline_age.astype(int) + 8
+def join_marian_probabilities(equal: pd.DataFrame, response: pd.DataFrame) -> pd.DataFrame:
+    """Join target propensities using the recorded scheduled opportunity."""
+    equal = equal.copy()
+    if "target_occasion" not in equal:
+        raise AssertionError("Equal-information predictions lack the true target occasion")
+    equal["counter"] = pd.to_numeric(equal.target_occasion, errors="raise").astype(int)
     equal = equal.rename(columns={"B8_mean": "B", "L8_mean": "L"})
-    response = pd.read_parquet(MARIAN_RESPONSE)
-    response = response[["outcome", "participant", "counter", "response_probability"]]
+    response = response[["outcome", "participant", "counter", "response_probability"]].copy()
     response["participant"] = response.participant.astype(str)
     equal["participant"] = equal.participant.astype(str)
     merged = equal.merge(response, on=["outcome", "participant", "counter"],
                          how="left", validate="one_to_one")
     if merged.response_probability.isna().any():
         raise AssertionError("Missing Marian response probability")
+    if merged.duplicated(["outcome", "participant", "counter"]).any():
+        raise AssertionError("Duplicate Marian target key")
     return merged.rename(columns={"baseline_age": "age"})
+
+
+def marian_ipw() -> pd.DataFrame:
+    equal = pd.read_parquet(EQUAL)
+    equal = equal.loc[equal.dataset.eq("Marian")].copy()
+    response = pd.read_parquet(MARIAN_RESPONSE)
+    return join_marian_probabilities(equal, response)
 
 
 def main() -> None:
@@ -258,9 +268,10 @@ def main() -> None:
         "software": {"python": platform.python_version(), "numpy": np.__version__,
                      "pandas": pd.__version__},
         "checks": {"strictly_prior_predictors": True, "common_targets_across_windows": True,
-                   "pseudo_origin_eight_report_washout": True,
-                   "participant_level_bootstrap": True,
-                   "ipw_probabilities_out_of_fold_by_participant": True},
+                    "pseudo_origin_eight_report_washout": True,
+                    "participant_level_bootstrap": True,
+                    "ipw_join_uses_true_target_occasion": True,
+                    "ipw_probabilities_out_of_fold_by_participant": True},
     }
     (OUT / "major_revision_sensitivity_manifest.json").write_text(
         json.dumps(manifest, indent=2), encoding="utf-8")
@@ -272,4 +283,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

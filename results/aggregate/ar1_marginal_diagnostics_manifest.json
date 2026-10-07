@@ -1,0 +1,14 @@
+{
+  "status": "post-hoc AR(1) marginal model check",
+  "timestamp_utc": "2026-10-07T02:11:07.242079+00:00",
+  "seed": 20260918,
+  "draws_per_participant": 200,
+  "protocol_sha256": "ec9c47b5a68a788f2d88dd0fe3e49f84dccc361f8b3d4c5303e9cb8c86143a2c",
+  "script_sha256": "262d8a31b01129fb391dc74590a21335ef19e4adf7a5e2b5abb3798310b243a9",
+  "software": {
+    "python": "3.12.3",
+    "numpy": "2.3.5",
+    "pandas": "2.3.3"
+  },
+  "participant_level_output_exported": false
+}
