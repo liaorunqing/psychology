@@ -93,9 +93,8 @@ Please cite the accompanying article and this repository. Machine-readable citat
 ## Archiving status
 
 The live code is available at <https://github.com/liaorunqing/psychology>.
-Version `v1.3.1` is the synchronized release candidate for the revised manuscript.
-The Zenodo concept DOI is <https://doi.org/10.5281/zenodo.23178871>; cite the
-version-specific DOI displayed on the archived `v1.3.1` record after deposition.
+Version `v1.3.1` is the synchronized release for the revised manuscript.
+The version-specific Zenodo DOI is <https://doi.org/10.5281/zenodo.23216022>.
 
 ## License
 

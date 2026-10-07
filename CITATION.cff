@@ -22,5 +22,5 @@ keywords:
   - temporal validation
 identifiers:
   - type: doi
-    value: "10.5281/zenodo.23178871"
-    description: "Zenodo concept DOI; use the version DOI for the archived release when available"
+    value: "10.5281/zenodo.23216022"
+    description: "Zenodo version DOI for release v1.3.1"
